@@ -1,3 +1,4 @@
+"use-strict";
 "use strict";
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
@@ -20,7 +21,6 @@ const scope = [
 router.get("/hello", (req, res) => {
     res.send("hello world");
 });
-// router.get("/auth", passport.authenticate("spotify", { scope }));
 router.get("/auth", (req, res) => {
     const state = helpers_1.generateRandomString(16);
     const url = spotifyApi.createAuthorizeURL(scope, state);
@@ -32,11 +32,9 @@ router.get("/auth/callback", (req, res) => {
         .authorizationCodeGrant(code.toString())
         .then((data) => {
         helpers_1.logger("data.body", data.body);
-        // const { access_token, refresh_token } = data.body;
-        // const redirectPath = `/redirect?access_token=${access_token}&refresh_token=${refresh_token}`;
         spotifyApi.setAccessToken(data.body.access_token);
         spotifyApi.setRefreshToken(data.body.refresh_token);
-        res.redirect("/redirect");
+        res.redirect("/dashboard");
     })
         .catch((err) => {
         helpers_1.logger(err);

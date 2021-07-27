@@ -1,13 +1,15 @@
-import PropTypes from "prop-types";
-import React, { useState, useEffect, useCallback } from "react";
 import { Container } from "@material-ui/core";
+import React, { useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
 import { logger } from "../common-util";
+import { AppCtx } from "../context";
 
-export const Dashboard = ({ user }) => {
+export const Dashboard = () => {
+  const { state } = useContext(AppCtx);
+
   useEffect(() => {
-    logger("user from props is ", user);
-  }, []);
+    logger("user from app context in Dashboard ", state.user);
+  }, [state.user]);
 
   // main render
   return (
@@ -20,11 +22,4 @@ export const Dashboard = ({ user }) => {
       </Container>
     </React.Fragment>
   );
-};
-
-Dashboard.propTypes = {
-  user: PropTypes.shape({
-    id: PropTypes.number,
-    name: PropTypes.string,
-  }),
 };
