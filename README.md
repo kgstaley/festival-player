@@ -1,1 +1,1 @@
-# spotify_playlist_generator
+# generate spotify playlists for festival lineups
