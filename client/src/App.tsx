@@ -2,44 +2,43 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { Helmet } from "react-helmet";
 import "./App.css";
 import { useCallback, useEffect, useState } from "react";
-import { Home } from "./components/index";
+import { Home, Dashboard } from "./components/index";
 import { Button } from "@material-ui/core";
-import { getLoginUrl, login } from "./services";
+import { getMe } from "./services";
 import { logger } from "./common-util";
 
 const App = () => {
-  // const [user, setUser] = useState(DEFAULT_USER);
-  const [loginUrl, setLoginUrl] = useState("");
+  const [user, setUser] = useState();
 
-  const fetchSpotifyUser = useCallback(async (code: string | any) => {
+  const login = () => {
+    window.location.href = `${process.env.REACT_APP_API_PREFIX}/auth`;
+  };
+
+  const fetchMe = useCallback(async () => {
     try {
-      const res = await login(code);
-      logger("login res", res);
+      const res = await getMe();
 
-      return res;
+      logger("res in fetchMe", res);
+
+      setUser(res);
     } catch (err) {
-      logger("error ", err);
+      logger("error", err);
       throw err;
     }
   }, []);
 
   useEffect(() => {
-    const url = getLoginUrl();
-    setLoginUrl(url);
+    fetchMe();
   }, []);
-
-  useEffect(() => {
-    if (window.location.search.includes("?code=")) {
-      const code = window.location.search.split("?code=").pop();
-      fetchSpotifyUser(code);
-    }
-  }, [fetchSpotifyUser]);
 
   const renderSwitch = useCallback(() => {
     return (
       <Switch>
-        <Route>
+        <Route path="/">
           <Home />
+        </Route>
+        <Route path="/dashboard">
+          <Dashboard user={user} />
         </Route>
       </Switch>
     );
@@ -52,7 +51,7 @@ const App = () => {
       </Helmet>
       <Router>
         <div>
-          <Button color="primary" href={loginUrl}>
+          <Button color="primary" onClick={login}>
             Login to Spotify
           </Button>
           <p>test render</p>

@@ -1,44 +1,71 @@
 import express from "express";
-import { logger } from "./helpers";
+import { generateRandomString, logger } from "./helpers";
 import SpotifyWebApi from "spotify-web-api-node";
 import dotenv from "dotenv";
+import { credentials } from "./constants";
 
 dotenv.config();
-
 const router = express.Router();
-
-const credentials = {
-  clientId: process.env.SPOTIFY_ID,
-  clientSecret: process.env.SPOTIFY_SECRET,
-  redirectUri: process.env.REDIRECT_URI,
-};
-
-logger("credentials are ", credentials);
-
-router.get("/", (req: any, res: any) => {
-  res.send("home");
-});
+const spotifyApi = new SpotifyWebApi(credentials);
+const scope = [
+  "user-read-private",
+  "user-read-email",
+  "playlist-read-private",
+  "user-top-read",
+];
 
 router.get("/hello", (req: any, res: any) => {
   res.send("hello world");
 });
 
-router.post("/login", (req, res) => {
-  const spotifyApi = new SpotifyWebApi(credentials);
+router.get("/auth", (req, res) => {
+  const state = generateRandomString(16);
+  const url = spotifyApi.createAuthorizeURL(scope, state);
+  res.redirect(url);
+});
 
-  const { code } = req.body;
-
-  logger("code is ", code);
-
+router.get("/auth/callback", (req, res) => {
+  const { code } = req.query;
   spotifyApi
-    .authorizationCodeGrant(code)
+    .authorizationCodeGrant(code.toString())
     .then((data) => {
-      res.json({ accessToken: data.body.access_token });
+      logger("data.body", data.body);
+      // const { access_token, refresh_token } = data.body;
+      // const redirectPath = `/redirect?access_token=${access_token}&refresh_token=${refresh_token}`;
+      spotifyApi.setAccessToken(data.body.access_token);
+      spotifyApi.setRefreshToken(data.body.refresh_token);
+      res.redirect("/redirect");
     })
     .catch((err) => {
       logger(err);
       res.sendStatus(400);
     });
+});
+
+router.get("/auth/me", (req, res) => {
+  spotifyApi
+    .getMe()
+    .then((data) => {
+      logger("data.body", data.body);
+      res.json(data.body);
+    })
+    .catch((err) => {
+      logger(err);
+      res.sendStatus(400);
+    });
+});
+
+router.get("/auth/login/success", (req, res) => {
+  logger("req.user in login success", req.user);
+  if (req.user) {
+    res.json({
+      success: true,
+      message: "Authentication success",
+      user: req.user,
+    });
+  } else {
+    res.sendStatus(403);
+  }
 });
 
 export default router;

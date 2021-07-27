@@ -1,5 +1,5 @@
 import client from "./axiosClient";
-const rootApi = `http://localhost:5000/api`;
+const rootApi = `http://localhost:5000`;
 const log = console.log;
 
 export const authService = async () => {
