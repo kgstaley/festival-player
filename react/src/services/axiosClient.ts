@@ -9,7 +9,10 @@ const defaultCacheOptions = {
 };
 
 const defaultAxiosOptions = {
-  headers: { "Content-Type": "application/json" },
+  headers: {
+    "Content-Type": "application/json",
+    "Access-Control-Allow-Origin": "*",
+  },
 };
 
 /**

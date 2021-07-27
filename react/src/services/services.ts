@@ -9,13 +9,27 @@ export const authService = async () => {
       method: "GET",
     };
 
-    const res = await client(config);
+    const { data } = await client(config);
 
-    log("res is", res);
-
-    return res;
+    return data;
   } catch (err) {
     log("error thrown in authService", err);
+    throw new Error(err);
+  }
+};
+
+export const getToken = async (code?: string, state?: string) => {
+  try {
+    const config = {
+      url: `${rootApi}/auth/callback?code=${code}&state=${state}`,
+      method: "GET",
+    };
+
+    const { data } = await client(config);
+
+    return data;
+  } catch (err) {
+    log("error thrown in getToken", err);
     throw new Error(err);
   }
 };
