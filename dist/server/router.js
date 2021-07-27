@@ -34,7 +34,7 @@ router.get("/auth/callback", (req, res) => {
         helpers_1.logger("data.body", data.body);
         spotifyApi.setAccessToken(data.body.access_token);
         spotifyApi.setRefreshToken(data.body.refresh_token);
-        res.redirect("/dashboard");
+        res.redirect("http://localhost:8080/dashboard");
     })
         .catch((err) => {
         helpers_1.logger(err);

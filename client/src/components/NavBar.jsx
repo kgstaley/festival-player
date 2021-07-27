@@ -1,15 +1,11 @@
 import { AppBar, Button } from "@material-ui/core";
 import PropTypes from "prop-types";
-import React, { useCallback, useContext, useEffect } from "react";
+import React, { useCallback, useContext } from "react";
 import { logger } from "../common-util";
 import { AppCtx } from "../context";
 
 export const NavBar = ({ children }) => {
   const { state } = useContext(AppCtx);
-
-  useEffect(() => {
-    logger("user from app context in NavBar", state.user);
-  }, [state.user]);
 
   const loginRedirect = () => {
     window.location.href = `${process.env.REACT_APP_API_PREFIX}/auth`;
@@ -57,6 +53,25 @@ export const NavBar = ({ children }) => {
     );
   }, [state.user]);
 
+  const renderLogin = useCallback(() => {
+    if (!state.user)
+      return (
+        <Button variant="contained" color="secondary" onClick={loginRedirect}>
+          Login to Spotify
+        </Button>
+      );
+
+    return (
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => logger("logout pressed")}
+      >
+        Logout
+      </Button>
+    );
+  }, [state.user]);
+
   const renderButtons = useCallback(() => {
     return (
       <div>
@@ -76,12 +91,10 @@ export const NavBar = ({ children }) => {
         >
           Dashboard
         </Button>
-        <Button variant="contained" color="secondary" onClick={loginRedirect}>
-          Login to Spotify
-        </Button>
+        {renderLogin()}
       </div>
     );
-  }, []);
+  }, [renderLogin]);
 
   // main render
   return (
