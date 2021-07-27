@@ -126,7 +126,7 @@ export const NavBar = ({ children }) => {
                   fontWeight: 300,
                 }}
               >
-                Festify
+                festival.me
               </h3>
             </div>
           </div>

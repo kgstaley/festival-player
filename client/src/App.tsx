@@ -78,7 +78,7 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <div className="App">
         <Helmet>
-          <title>Festify</title>
+          <title>festival.me</title>
         </Helmet>
         <Router>
           <NavBar>
