@@ -15,7 +15,7 @@ export const Dashboard = () => {
   return (
     <React.Fragment>
       <Helmet>
-        <title>Festify - Dashboard</title>
+        <title>festival.me - Dashboard</title>
       </Helmet>
       <Container>
         <div>Dashboard goes here</div>
