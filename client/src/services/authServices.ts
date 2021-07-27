@@ -1,7 +1,7 @@
 import client from "./axiosClient";
 import { logger } from "../common-util";
 
-const rootApi = `http://localhost:5000/auth`;
+const rootApi = process.env.REACT_APP_API_PREFIX + "/auth";
 
 export const auth = async () => {
   try {

@@ -19,16 +19,12 @@ const start = () => {
     app.use(urlencoded({ extended: true }));
     app.use(cookieParser());
 
-    app.use("/", router);
+    app.use("/api", router);
     // set path for react
     app.use(express.static(path.join(__dirname, "..", "client", "build")));
 
-    // serve react from express
+    // serve react from express for auth to avoid error on cors redirect to spotify auth
     app.get("/", (req: any, res: any) => {
-      res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
-    });
-
-    app.get("/dashboard", (req: any, res: any) => {
       res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
     });
 

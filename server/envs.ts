@@ -1,5 +1,5 @@
 const stateKey: string = "spotify_auth_state";
-const redirectUri: string = "http://localhost:5000/auth/callback";
+const redirectUri: string = process.env.REDIRECT_URI;
 const clientId: string = process.env.SPOTIFY_ID;
 const clientSecret: string = process.env.SPOTIFY_SECRET;
 

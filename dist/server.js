@@ -21,16 +21,16 @@ const start = () => {
         app.use(body_parser_1.json());
         app.use(body_parser_1.urlencoded({ extended: true }));
         app.use(cookie_parser_1.default());
-        app.use("/", router_1.default);
+        app.use("/api", router_1.default);
         // set path for react
         app.use(express_1.default.static(path_1.default.join(__dirname, "..", "client", "build")));
         // serve react from express
         app.get("/", (req, res) => {
             res.sendFile(path_1.default.join(__dirname, "..", "client", "build", "index.html"));
         });
-        app.get("/dashboard", (req, res) => {
-            res.sendFile(path_1.default.join(__dirname, "..", "client", "build", "index.html"));
-        });
+        // app.get("/dashboard", (req: any, res: any) => {
+        //   res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
+        // });
         app.listen(port, () => {
             helpers_1.logger(`Express up and listening on port ${port}`);
         });
