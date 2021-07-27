@@ -28,7 +28,7 @@ const start = () => {
       res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
     });
 
-    app.get("/redirect", (req: any, res: any) => {
+    app.get("/dashboard", (req: any, res: any) => {
       res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
     });
 

@@ -1,3 +1,4 @@
+"use-strict";
 import express from "express";
 import { generateRandomString, logger } from "./helpers";
 import SpotifyWebApi from "spotify-web-api-node";
@@ -30,11 +31,9 @@ router.get("/auth/callback", (req, res) => {
     .authorizationCodeGrant(code.toString())
     .then((data) => {
       logger("data.body", data.body);
-      // const { access_token, refresh_token } = data.body;
-      // const redirectPath = `/redirect?access_token=${access_token}&refresh_token=${refresh_token}`;
       spotifyApi.setAccessToken(data.body.access_token);
       spotifyApi.setRefreshToken(data.body.refresh_token);
-      res.redirect("/redirect");
+      res.redirect("http://localhost:8080/dashboard");
     })
     .catch((err) => {
       logger(err);
@@ -55,7 +54,7 @@ router.get("/auth/me", (req, res) => {
     });
 });
 
-router.get("/auth/login/success", (req, res) => {
+router.get("/auth/login/success", (req: any, res) => {
   logger("req.user in login success", req.user);
   if (req.user) {
     res.json({
