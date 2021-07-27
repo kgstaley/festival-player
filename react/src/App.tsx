@@ -21,6 +21,16 @@ const App = () => {
     try {
       res = await authService();
       log("res is ", res);
+
+      if (!res) {
+        throw new Error("no redirect callback returned");
+      }
+      // window.location = res;
+
+      // const code = window.location.search.split("?code=").pop();
+      // log("code is ", code);
+      // const token = await getToken(code, "spotify_auth_state");
+      // log("token", token);
     } catch (err) {
       log("error thrown in fetchUser", err);
       throw new Error(err);
@@ -29,7 +39,9 @@ const App = () => {
     }
   };
 
-  const handleFetchUser = useCallback(() => {
+  const handleFetchUser = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
     log("handle fetch user firing");
     fetchUser();
   }, []);
