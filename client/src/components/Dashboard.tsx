@@ -4,9 +4,11 @@ import { Helmet } from "react-helmet";
 import { logger } from "../common-util";
 import { AppCtx } from "../context";
 
-export const Dashboard = () => {
+const Dashboard = (_props: any) => {
   const { state } = useContext(AppCtx);
   const theme = useTheme();
+
+  const { palette } = theme;
 
   const [search, setSearch] = useState("");
 
@@ -31,7 +33,7 @@ export const Dashboard = () => {
             type="text"
             inputProps={{
               style: {
-                color: "wheat",
+                color: palette.info.main,
                 border: "1px wheat solid",
                 borderRadius: "4px",
               },
@@ -40,7 +42,7 @@ export const Dashboard = () => {
         </div>
       </React.Fragment>
     );
-  }, [search, handleSearchChange]);
+  }, [search, handleSearchChange, palette]);
 
   // main render
   return (
@@ -50,18 +52,10 @@ export const Dashboard = () => {
       </Helmet>
       <Container>
         <div className="body-container">
-          <div
-            className="flex flex-1 flex-col"
-            style={{
-              backgroundColor: theme.palette.success.main,
-              padding: "2rem",
-              borderRadius: "10px",
-              boxShadow: "2px 2px 10px 1px rgba(0, 0, 0, 0.3)",
-            }}
-          >
+          <div className="flex flex-1 flex-col dashboard-input-container">
             <h3
               className="header-title"
-              style={{ fontSize: "1.5rem", color: "wheat" }}
+              style={{ fontSize: "1.5rem", color: palette.info.main }}
             >
               Auto-generate playlists based on a collection of your favorite
               artists or tracks
@@ -73,3 +67,5 @@ export const Dashboard = () => {
     </React.Fragment>
   );
 };
+
+export default Dashboard;

@@ -2,19 +2,19 @@ import React, { useContext, useEffect } from "react";
 import { logger } from "../common-util";
 import { AppCtx } from "../context";
 
-const Home = (_props: any) => {
+const Landing = (_props: any) => {
   const { state } = useContext(AppCtx);
 
   useEffect(() => {
-    logger("state.user in Home.tsx", state.user);
-  }, [state.user]);
+    logger("state.isAuthenticated in Landing.tsx", state.isAuthenticated);
+  }, [state.isAuthenticated]);
 
   // main render
   return (
     <React.Fragment>
-      <div>home is here </div>
+      <div>You must login to Spotify to use this app.</div>
     </React.Fragment>
   );
 };
 
-export default Home;
+export default Landing;
