@@ -1,3 +1,25 @@
+$primary: #6a7b76;
+$secondary: #8b9d83;
+$info: #beb0a7;
+$success: #3a4e48;
+
+$text-primary: #040303;
+$text-secondary: #3a4e48;
+$text-disabled: #beb0a7;
+
+$box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
+
+body {
+  background-color: $info;
+}
+
+.dashboard-input-container {
+  background-color: $success;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: $box-shadow;
+}
+
 .avatar-container {
   display: flex;
   height: 5rem;
@@ -5,7 +27,7 @@
   justify-content: center;
   border-radius: 100%;
   overflow: hidden;
-  box-shadow: 2px 2px 12px 1px rgba(0, 0, 0, 0.3);
+  box-shadow: $box-shadow;
   border: 2px white solid;
 }
 

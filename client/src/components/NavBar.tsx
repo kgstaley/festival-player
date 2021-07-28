@@ -6,7 +6,7 @@ import React, { useCallback, useContext } from "react";
 import { logger } from "../common-util";
 import { AppCtx } from "../context";
 
-export const NavBar = ({ children }: any) => {
+const NavBar = ({ children }: any) => {
   const { state } = useContext(AppCtx);
 
   const loginRedirect = () => {
@@ -95,7 +95,12 @@ export const NavBar = ({ children }: any) => {
           <div className="appbar-inner">
             {renderUserInfo()}
             <div style={{ paddingLeft: "2rem" }}>
-              <h3 className="header-title">festival.me</h3>
+              <h3
+                className="header-title"
+                style={{ textShadow: "1px 1px 10px 4px rgba(0, 0, 0, 0.3)" }}
+              >
+                festival.me
+              </h3>
             </div>
           </div>
           {renderButtons()}
@@ -113,3 +118,5 @@ NavBar.propTypes = {
     PropTypes.func,
   ]),
 };
+
+export default NavBar;

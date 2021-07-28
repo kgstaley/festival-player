@@ -1,36 +1,23 @@
 "use-strict";
-import { Container, createTheme } from "@material-ui/core";
+import { Container, LinearProgress } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import { useCallback, useEffect, useContext } from "react";
+import React, { useCallback, useContext, useEffect, Suspense } from "react";
 import { Helmet } from "react-helmet";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
+import { TransitionGroup } from "react-transition-group";
 import { logger } from "./common-util";
-import { Dashboard, Home, NavBar } from "./components/index";
-import { AppCtx, actions } from "./context";
+import { FadeIn } from "./components/common-ui";
+import { NavBar } from "./components/index";
+import { actions, AppCtx } from "./context";
+import { routes } from "./routes";
 import { getMe } from "./services";
 import "./styles/styles.scss";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#6A7B76",
-    },
-    secondary: {
-      main: "#8B9D83",
-    },
-    info: {
-      main: "#BEB0A7",
-    },
-    success: {
-      main: "#3A4E48",
-    },
-    text: {
-      primary: "#040303",
-      secondary: "#3A4E48",
-      disabled: "#BEB0A7",
-    },
-  },
-});
+import { theme } from "./styles/theme";
 
 const App = () => {
   const { state, dispatch } = useContext(AppCtx);
@@ -62,19 +49,38 @@ const App = () => {
     }
   }, [state.user, fetchMe]);
 
-  const renderSwitch = useCallback(() => {
-    return (
-      <Switch>
-        <Route path="/" exact>
-          <Home />
+  const mapRenderRoutes = useCallback(() => {
+    const filteredRoutes = !state.isAuthenticated
+      ? routes.filter((r) => !r.requiresAuth)
+      : routes.filter((r) => r.requiresAuth);
+
+    const redirect = !state.isAuthenticated ? "/" : "/dashboard";
+
+    const routeComps = filteredRoutes.map((route) => {
+      const Comp = route.component;
+      return (
+        <Route exact={route.exact} path={route.paths} key={route.id}>
+          {(routerProps) => (
+            <TransitionGroup
+              id="app-transition-group"
+              key="app-transition-group"
+            >
+              <FadeIn in={true} key={route.id}>
+                <React.Fragment>
+                  <Comp {...routerProps} />
+                </React.Fragment>
+              </FadeIn>
+            </TransitionGroup>
+          )}
         </Route>
-        {state.isAuthenticated && (
-          <Route path="/dashboard">
-            <Dashboard />
-          </Route>
-        )}
-      </Switch>
-    );
+      );
+    });
+
+    const mappedRoutes = routeComps.concat([
+      <Redirect key="redirect" to={redirect} />,
+    ]);
+
+    return mappedRoutes;
   }, [state.isAuthenticated]);
 
   return (
@@ -83,11 +89,17 @@ const App = () => {
         <Helmet>
           <title>festival.me</title>
         </Helmet>
-        <Router>
-          <NavBar>
-            <Container>{renderSwitch()}</Container>
-          </NavBar>
-        </Router>
+        <Suspense
+          fallback={<LinearProgress variant="buffer" color="primary" />}
+        >
+          <Router>
+            <NavBar>
+              <Container>
+                <Switch>{mapRenderRoutes()}</Switch>
+              </Container>
+            </NavBar>
+          </Router>
+        </Suspense>
       </div>
     </ThemeProvider>
   );
