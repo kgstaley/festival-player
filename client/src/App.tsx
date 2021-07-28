@@ -1,14 +1,14 @@
 "use-strict";
 import { Container, createTheme } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import { useCallback, useEffect, useState, useContext } from "react";
+import { useCallback, useEffect, useContext } from "react";
 import { Helmet } from "react-helmet";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import "./App.css";
 import { logger } from "./common-util";
 import { Dashboard, Home, NavBar } from "./components/index";
 import { AppCtx, actions } from "./context";
 import { getMe } from "./services";
+import "./styles/styles.scss";
 
 const theme = createTheme({
   palette: {
@@ -33,8 +33,6 @@ const theme = createTheme({
 });
 
 const App = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
   const { state, dispatch } = useContext(AppCtx);
 
   logger("app context state is in App.tsx", state);
@@ -44,9 +42,14 @@ const App = () => {
       const res = await getMe();
       logger("res in fetchMe", res);
 
+      if (!res.id) {
+        dispatch({ type: actions.SET_USER, user: null });
+        dispatch({ type: actions.SET_AUTHENTICATED, isAuthenticated: false });
+        return;
+      }
+
       dispatch({ type: actions.SET_USER, user: res });
       dispatch({ type: actions.SET_AUTHENTICATED, isAuthenticated: true });
-      setIsAuthenticated(true);
     } catch (err) {
       logger("error", err);
       throw err;
@@ -65,14 +68,14 @@ const App = () => {
         <Route path="/" exact>
           <Home />
         </Route>
-        {isAuthenticated && (
+        {state.isAuthenticated && (
           <Route path="/dashboard">
             <Dashboard />
           </Route>
         )}
       </Switch>
     );
-  }, [isAuthenticated]);
+  }, [state.isAuthenticated]);
 
   return (
     <ThemeProvider theme={theme}>

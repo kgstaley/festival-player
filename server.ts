@@ -5,8 +5,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import express from "express";
 import path from "path";
-import { logger } from "./server/helpers";
-import router from "./server/router";
+import { logger, router } from "./server/index";
 
 dotenv.config();
 const app = express();
@@ -19,6 +18,7 @@ const start = () => {
     app.use(urlencoded({ extended: true }));
     app.use(cookieParser());
 
+    // set api prefix for node endpoints
     app.use("/api", router);
     // set path for react
     app.use(express.static(path.join(__dirname, "..", "client", "build")));

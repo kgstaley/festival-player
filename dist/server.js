@@ -10,8 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
-const helpers_1 = require("./server/helpers");
-const router_1 = __importDefault(require("./server/router"));
+const index_1 = require("./server/index");
 dotenv_1.default.config();
 const app = express_1.default();
 const port = process.env.PORT;
@@ -21,22 +20,20 @@ const start = () => {
         app.use(body_parser_1.json());
         app.use(body_parser_1.urlencoded({ extended: true }));
         app.use(cookie_parser_1.default());
-        app.use("/api", router_1.default);
+        // set api prefix for node endpoints
+        app.use("/api", index_1.router);
         // set path for react
         app.use(express_1.default.static(path_1.default.join(__dirname, "..", "client", "build")));
-        // serve react from express
+        // serve react from express for auth to avoid error on cors redirect to spotify auth
         app.get("/", (req, res) => {
             res.sendFile(path_1.default.join(__dirname, "..", "client", "build", "index.html"));
         });
-        // app.get("/dashboard", (req: any, res: any) => {
-        //   res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
-        // });
         app.listen(port, () => {
-            helpers_1.logger(`Express up and listening on port ${port}`);
+            index_1.logger(`Express up and listening on port ${port}`);
         });
     }
     catch (err) {
-        helpers_1.logger("error thrown in start server", err);
+        index_1.logger("error thrown in start server", err);
     }
 };
 start();

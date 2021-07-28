@@ -1,68 +1,59 @@
+import { faUserAstronaut } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AppBar, Button } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useCallback, useContext } from "react";
 import { logger } from "../common-util";
 import { AppCtx } from "../context";
 
-export const NavBar = ({ children }) => {
+export const NavBar = ({ children }: any) => {
   const { state } = useContext(AppCtx);
 
   const loginRedirect = () => {
     window.location.href = `${process.env.REACT_APP_API_PREFIX}/auth`;
   };
 
+  const renderAvatar = useCallback(() => {
+    if (!state.user)
+      return <FontAwesomeIcon icon={faUserAstronaut} size="2x" color="white" />;
+
+    let avatar;
+    if (state.user && state.user?.images?.length > 0) {
+      avatar = state.user.images[0].url;
+    }
+
+    return <img src={avatar} className="avatar" alt="User avatar" />;
+  }, [state.user]);
+
   const renderUserInfo = useCallback(() => {
     if (!state.user) return null;
 
     return (
       <React.Fragment>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            marginLeft: "1rem",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              height: "5rem",
-              width: "5rem",
-              justifyContent: "center",
-              borderRadius: "100%",
-              overflow: "hidden",
-            }}
-          >
-            <img
-              src={state.user.images[0].url}
-              style={{ display: "flex", flex: 1, height: null, width: null }}
-              alt="User avatar"
-            />
-          </div>
-          <div
-            style={{
-              color: "white",
-              paddingTop: "0.5rem",
-              paddingBottom: "0.5rem",
-            }}
-          >
-            {state.user.display_name}
-          </div>
+        <div id="header-userinfo-container">
+          <div className="avatar-container">{renderAvatar()}</div>
+          <div id="header-username">{state.user.display_name}</div>
         </div>
       </React.Fragment>
     );
-  }, [state.user]);
+  }, [state.user, renderAvatar]);
 
   const renderLogin = useCallback(() => {
     if (!state.user)
       return (
-        <Button variant="contained" color="secondary" onClick={loginRedirect}>
+        <Button
+          style={{ marginRight: "1.5rem" }}
+          variant="contained"
+          color="secondary"
+          onClick={loginRedirect}
+        >
           Login to Spotify
         </Button>
       );
 
     return (
       <Button
+        style={{ marginRight: "1.5rem" }}
         variant="contained"
         color="primary"
         onClick={() => logger("logout pressed")}
@@ -100,34 +91,11 @@ export const NavBar = ({ children }) => {
   return (
     <React.Fragment>
       <AppBar position="static" style={{ padding: "0.5rem" }}>
-        <div
-          style={{
-            display: "flex",
-            flex: 1,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              flex: 1,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
+        <div className="appbar-outer">
+          <div className="appbar-inner">
             {renderUserInfo()}
             <div style={{ paddingLeft: "2rem" }}>
-              <h3
-                style={{
-                  fontFamily: "monospace",
-                  fontSize: "2.5rem",
-                  fontWeight: 300,
-                }}
-              >
-                festival.me
-              </h3>
+              <h3 className="header-title">festival.me</h3>
             </div>
           </div>
           {renderButtons()}
