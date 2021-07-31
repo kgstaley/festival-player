@@ -6,7 +6,7 @@ export const reducer = (state: any, action: any) => {
     case actions.GET_USER:
       return { ...state, user: state.user };
     case actions.LOG_OUT:
-      return { ...state, user: null };
+      return { ...state, user: null, isAuthenticated: false };
     case actions.SET_AUTHENTICATED:
       return { ...state, isAuthenticated: action.isAuthenticated };
     default:

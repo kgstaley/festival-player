@@ -24,7 +24,7 @@ const start = () => {
     app.use(express.static(path.join(__dirname, "..", "client", "build")));
 
     // serve react from express for auth to avoid error on cors redirect to spotify auth
-    app.get("/", (req: any, res: any) => {
+    app.get("/", (req, res) => {
       res.sendFile(path.join(__dirname, "..", "client", "build", "index.html"));
     });
 
@@ -33,6 +33,11 @@ const start = () => {
     });
   } catch (err) {
     logger("error thrown in start server", err);
+    process.on("uncaughtException", () =>
+      app.removeListener(port, () => {
+        logger("removing port listener and closing express");
+      })
+    );
   }
 };
 start();

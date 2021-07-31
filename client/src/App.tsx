@@ -1,14 +1,10 @@
 "use-strict";
 import { Container, LinearProgress } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
-import React, { useCallback, useContext, useEffect, Suspense } from "react";
+import PropTypes from "prop-types";
+import React, { Suspense, useCallback, useContext, useEffect } from "react";
 import { Helmet } from "react-helmet";
-import {
-  BrowserRouter as Router,
-  Redirect,
-  Route,
-  Switch,
-} from "react-router-dom";
+import { Redirect, Route, Switch, withRouter } from "react-router-dom";
 import { TransitionGroup } from "react-transition-group";
 import { logger } from "./common-util";
 import { FadeIn } from "./components/common-ui";
@@ -19,10 +15,9 @@ import { getMe } from "./services";
 import "./styles/styles.scss";
 import { theme } from "./styles/theme";
 
-const App = () => {
+const App = (props: any) => {
   const { state, dispatch } = useContext(AppCtx);
-
-  logger("app context state is in App.tsx", state);
+  const { location } = props;
 
   const fetchMe = useCallback(async () => {
     try {
@@ -44,10 +39,11 @@ const App = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (!state.user) {
+    if (!state.user && !location.pathname.includes("/logout")) {
+      logger("fetching user ");
       fetchMe();
     }
-  }, [state.user, fetchMe]);
+  }, [state.user, fetchMe, location.pathname]);
 
   const mapRenderRoutes = useCallback(() => {
     const filteredRoutes = !state.isAuthenticated
@@ -90,19 +86,28 @@ const App = () => {
           <title>festival.me</title>
         </Helmet>
         <Suspense
-          fallback={<LinearProgress variant="buffer" color="primary" />}
+          fallback={
+            <LinearProgress
+              variant="buffer"
+              color="primary"
+              value={20}
+              valueBuffer={50}
+            />
+          }
         >
-          <Router>
-            <NavBar>
-              <Container>
-                <Switch>{mapRenderRoutes()}</Switch>
-              </Container>
-            </NavBar>
-          </Router>
+          <NavBar {...props}>
+            <Container>
+              <Switch>{mapRenderRoutes()}</Switch>
+            </Container>
+          </NavBar>
         </Suspense>
       </div>
     </ThemeProvider>
   );
 };
 
-export default App;
+App.propTypes = {
+  props: PropTypes.shape({}),
+};
+
+export default withRouter(App);

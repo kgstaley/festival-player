@@ -1,18 +1,72 @@
+import { faSpotify } from "@fortawesome/free-brands-svg-icons";
 import { faUserAstronaut } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { AppBar, Button } from "@material-ui/core";
+import { AppBar, Button, useTheme } from "@material-ui/core";
 import PropTypes from "prop-types";
 import React, { useCallback, useContext } from "react";
 import { logger } from "../common-util";
-import { AppCtx } from "../context";
+import { AppCtx, actions } from "../context";
+import { logout } from "../services";
 
-const NavBar = ({ children }: any) => {
-  const { state } = useContext(AppCtx);
+const NavBar = ({ children, history }: { children: any; history: any }) => {
+  const theme = useTheme();
+  const { state, dispatch } = useContext(AppCtx);
+  const { palette } = theme;
 
-  const loginRedirect = () => {
+  //#region api calls
+  const logOut = useCallback(async () => {
+    try {
+      const res = await logout();
+
+      logger("logout response", res);
+
+      dispatch({ type: actions.LOG_OUT });
+
+      history.replace("/logout");
+
+      return res;
+    } catch (err) {
+      logger("error thrown in logOut", err);
+      throw err;
+    }
+  }, [history, dispatch]);
+  //#endregion
+
+  //#region handlers
+  const handleLoginRedirect = useCallback(() => {
     window.location.href = `${process.env.REACT_APP_API_PREFIX}/auth`;
-  };
+  }, []);
 
+  const handlePushToHome = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      e.stopPropagation();
+      history.push("/home");
+    },
+    [history]
+  );
+
+  const handlePushToDash = useCallback(
+    (e: any) => {
+      e.preventDefault();
+      e.stopPropagation();
+      history.push("/dashboard");
+    },
+    [history]
+  );
+
+  const handleLogout = useCallback(
+    (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      logger("logout pressed");
+      logOut();
+    },
+    [logOut]
+  );
+  //#endregion
+
+  //#region renders
   const renderAvatar = useCallback(() => {
     if (!state.user)
       return <FontAwesomeIcon icon={faUserAstronaut} size="2x" color="white" />;
@@ -42,12 +96,18 @@ const NavBar = ({ children }: any) => {
     if (!state.user)
       return (
         <Button
-          style={{ marginRight: "1.5rem" }}
+          style={{ marginRight: "1.5rem", backgroundColor: SPOTIFY_GREEN }}
           variant="contained"
-          color="secondary"
-          onClick={loginRedirect}
+          // color="secondary"
+          onClick={handleLoginRedirect}
+          title="Connect with Spotify"
         >
-          Login to Spotify
+          <FontAwesomeIcon
+            icon={faSpotify}
+            color={palette.text.primary}
+            size="2x"
+          />
+          <span style={{ paddingLeft: "12px" }}>Connect with Spotify</span>
         </Button>
       );
 
@@ -56,21 +116,25 @@ const NavBar = ({ children }: any) => {
         style={{ marginRight: "1.5rem" }}
         variant="contained"
         color="primary"
-        onClick={() => logger("logout pressed")}
+        onClick={handleLogout}
       >
         Logout
       </Button>
     );
-  }, [state.user]);
+  }, [state.user, handleLogout, palette.text.primary, handleLoginRedirect]);
 
   const renderButtons = useCallback(() => {
+    if (!state.isAuthenticated) {
+      return <div>{renderLogin()}</div>;
+    }
+
     return (
       <div>
         <Button
           style={{ marginRight: "2rem" }}
           variant="contained"
           color="secondary"
-          href="/"
+          onClick={handlePushToHome}
         >
           Home
         </Button>
@@ -78,14 +142,15 @@ const NavBar = ({ children }: any) => {
           style={{ marginRight: "2rem" }}
           variant="contained"
           color="secondary"
-          href="/dashboard"
+          onClick={handlePushToDash}
         >
           Dashboard
         </Button>
         {renderLogin()}
       </div>
     );
-  }, [renderLogin]);
+  }, [state.isAuthenticated, renderLogin, handlePushToDash, handlePushToHome]);
+  //#endregion
 
   // main render
   return (
@@ -117,6 +182,12 @@ NavBar.propTypes = {
     PropTypes.element,
     PropTypes.func,
   ]),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+    replace: PropTypes.func,
+  }).isRequired,
 };
 
 export default NavBar;
+
+const SPOTIFY_GREEN = "#1DB954";
