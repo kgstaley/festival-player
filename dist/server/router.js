@@ -30,6 +30,13 @@ router.get("/auth", (req, res) => {
 });
 router.get("/auth/callback", (req, res) => {
     const { code } = req.query;
+    index_1.logger("req.query", req.query);
+    index_1.logger("code", code);
+    if (!code) {
+        index_1.logger("no code provided");
+        res.sendStatus(400);
+        return;
+    }
     spotifyWebApi
         .authorizationCodeGrant(code.toString())
         .then((data) => {
@@ -40,7 +47,7 @@ router.get("/auth/callback", (req, res) => {
     })
         .catch((err) => {
         index_1.logger(err);
-        res.sendStatus(res.status);
+        res.sendStatus(res.statusCode);
     });
 });
 router.get("/auth/me", (req, res) => {
@@ -55,15 +62,19 @@ router.get("/auth/me", (req, res) => {
         res.sendStatus(res.statusCode);
     });
 });
+router.post("/auth/logout", (req, res) => {
+    spotifyWebApi.resetAccessToken();
+    res.sendStatus(res.statusCode);
+});
 //#endregion
 //#region spotify api calls
 // get several tracks based on track spotify id (querystring) with max of 50 at a time
 router.get(`/spotify/tracks`, (req, res) => {
-    if (!req.body)
+    if (!req.query)
         res.sendStatus(400);
-    const { ids, market } = req.body;
+    const { ids, market } = req.query;
     index_1.logger("market is (country code)", market);
-    index_1.logger("spotify track ids are ", ids);
+    index_1.logger("spotify track ids are ", ids, typeof ids);
     spotifyWebApi
         .getTracks(ids, market)
         .then((data) => {
@@ -77,12 +88,14 @@ router.get(`/spotify/tracks`, (req, res) => {
 });
 // search
 router.get(`/spotify/search`, (req, res) => {
-    if (!req.body)
+    if (!req.query)
         res.sendStatus(400);
-    const { q, type, market, limit = 25, offset = 0 } = req.body;
+    const { q, types, market, limit = 25, offset = 0 } = req.query;
     const options = { market, limit, offset };
+    index_1.logger("req.query", req.query);
+    const parsedTypes = JSON.parse(types);
     spotifyWebApi
-        .search(q, type, options)
+        .search(q, parsedTypes, options)
         .then((data) => {
         index_1.logger("data from search", data);
         res.json(data.body);
@@ -97,9 +110,9 @@ router.post(`/spotify/playlist/users/:userId/new`, (req, res) => {
     const { userId } = req.params;
     if (!userId)
         res.sendStatus(400);
-    if (!req.body)
+    if (!req.query)
         res.sendStatus(400);
-    const { name, description } = req.body;
+    const { name, description } = req.query;
     index_1.logger("name and description are", { name, description });
     const options = { description, public: false };
     spotifyWebApi
@@ -115,12 +128,14 @@ router.post(`/spotify/playlist/users/:userId/new`, (req, res) => {
 });
 // get list of current user's playlists
 router.get("/spotify/playlists/user/:userId", (req, res) => {
-    const { userId } = req.params;
+    const userId = req.params.userId;
     if (!userId)
         res.sendStatus(400);
-    const { offset, limit } = req.body;
+    // const { offset, limit } = req.query;
+    const offset = req.query.offset;
+    const limit = req.query.limit;
     spotifyWebApi
-        .getUserPlaylists({ offset, limit })
+        .getUserPlaylists(userId, { offset, limit })
         .then((data) => {
         index_1.logger("data for get current user playlists", data);
         res.json(data.body);
@@ -135,7 +150,7 @@ router.get("/spotify/playlist/:playlistId", (req, res) => {
     const { playlistId } = req.params;
     if (!playlistId)
         res.sendStatus(400);
-    const { market } = req.body;
+    const { market } = req.query;
     const options = { market };
     spotifyWebApi
         .getPlaylist(playlistId, options)
@@ -151,12 +166,12 @@ router.get("/spotify/playlist/:playlistId", (req, res) => {
 // get users top artists and tracks
 router.get("/spotify/me/top/:type", (req, res) => {
     const { type } = req.params;
-    const { timeRange, offset = 0, limit = 10 } = req.body;
+    const { time_range = "medium_term", offset = 0, limit = 10 } = req.query;
     if (!type)
         res.sendStatus(res.statusCode);
     if (type === "artists") {
         spotifyWebApi
-            .getMyTopArtists({ time_range: timeRange, offset, limit })
+            .getMyTopArtists({ time_range, offset, limit })
             .then((data) => {
             index_1.logger("data for get my top artists", data);
             res.json(data.body);
@@ -168,7 +183,7 @@ router.get("/spotify/me/top/:type", (req, res) => {
     }
     else if (type === "tracks") {
         spotifyWebApi
-            .getMyTopTracks({ time_range: timeRange, offset, limit })
+            .getMyTopTracks({ time_range, offset, limit })
             .then((data) => {
             index_1.logger("data for get my top tracks", data);
             res.json(data.body);

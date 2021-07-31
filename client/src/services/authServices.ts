@@ -15,11 +15,22 @@ export const auth = async () => {
 
 export const getMe = async () => {
   try {
-    const config = { url: `${rootApi}/me` };
+    const config = { url: `${rootApi}/me`, method: "GET" };
     const { data } = await client(config);
     return data;
   } catch (err) {
     logger("error thrown in getMe", err);
+    throw err;
+  }
+};
+
+export const logout = async () => {
+  try {
+    const config = { url: `${rootApi}/logout`, method: "POST" };
+    const { data } = await client(config);
+    return data;
+  } catch (err) {
+    logger("error thrown in logout", err);
     throw err;
   }
 };

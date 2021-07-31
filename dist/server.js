@@ -34,6 +34,9 @@ const start = () => {
     }
     catch (err) {
         index_1.logger("error thrown in start server", err);
+        process.on("uncaughtException", () => app.removeListener(port, () => {
+            index_1.logger("removing port listener and closing express");
+        }));
     }
 };
 start();

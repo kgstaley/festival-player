@@ -22,7 +22,7 @@ export const FadeIn = ({
   children: any;
 }) => {
   return (
-    <Transition in={inProp} timeout={duration} unmountOnExit={false}>
+    <Transition in={inProp} timeout={duration}>
       {(state) => (
         <div style={{ ...defaultStyle, ...transitionStyles[state] }}>
           {children}
