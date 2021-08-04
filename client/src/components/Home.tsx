@@ -1,7 +1,7 @@
 import React, { BaseSyntheticEvent, useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { TransitionGroup } from 'react-transition-group';
-import { TopArtistsAndTracks } from './common-ui';
+import { TopArtistsAndTracks } from './index';
 
 const Home = (_props: any) => {
     const [topType, setTopType] = useState('artists');

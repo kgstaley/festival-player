@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { Album, Artist, Track } from '../interfaces';
+import { SpotifyRes } from '../type-defs';
 
 interface AppContextInferface {
     state: State;
@@ -9,8 +9,10 @@ interface AppContextInferface {
 interface State {
     user: any;
     isAuthenticated: boolean;
-    selected: Array<Artist | Track | Album>;
+    selected: Array<SpotifyRes>;
     openDrawer: boolean;
+    loading: boolean;
+    creatingPlaylist: boolean;
 }
 
 export const AppCtx = createContext({} as AppContextInferface);

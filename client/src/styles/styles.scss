@@ -11,9 +11,19 @@ $box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
 
 $spotify-green: #1db954;
 
+$dark-opacity-background-color: rgba(0, 0, 0, 0.3);
+
 // body {
 //     background-color: $info;
 // }
+
+h5 {
+    font-family: monospace;
+    font-size: 1.5rem;
+    font-weight: 400;
+    margin: 0;
+    cursor: default;
+}
 
 .search-item-container {
     display: flex;
@@ -181,25 +191,34 @@ $spotify-green: #1db954;
     }
 }
 
-#drawer-container {
+#drawer-float-container {
     position: fixed;
     top: 10rem;
     right: 2rem;
     display: flex;
     flex: 1;
     justify-content: flex-end;
-    overflow-y: auto;
-    overflow-x: hidden;
 }
 
 #drawer {
-    min-width: 20rem;
-    width: 20rem;
-    max-width: 20rem;
     overflow-x: hidden;
+    margin-right: 0;
+    width: 100%;
+}
+
+#drawer-header {
+    display: flex;
+    flex-shrink: 2;
+    font-family: monospace;
+    color: white;
+    padding: 1rem 1.5rem;
+    justify-content: space-between;
+    box-shadow: $box-shadow;
+    margin-bottom: 1rem;
 }
 
 #drawer-list {
+    display: flex;
     overflow-x: hidden;
 }
 
@@ -213,13 +232,54 @@ $spotify-green: #1db954;
     z-index: 3;
 }
 
-#drawer-header {
-    font-family: monospace;
-    color: white;
-    padding: 1rem 2rem;
-    justify-content: space-between;
-    box-shadow: $box-shadow;
-    margin-bottom: 1rem;
+#drawer-header-text {
+    display: flex;
+    flex-direction: column;
+    border: 1px white solid;
+    padding: 0.5rem 1rem;
+    cursor: default;
+    flex-shrink: 2;
+    text-align: center;
+    justify-content: center;
+}
+
+.drawer-listitem-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .drawer-listitem {
+        z-index: 1;
+        display: flex;
+        flex-direction: row;
+        background-color: $dark-opacity-background-color;
+        margin-bottom: 1rem;
+        right: 0;
+    }
+    .drawer-remove-icon {
+        display: none;
+        position: absolute;
+        right: 1rem;
+    }
+    &:hover,
+    &:active {
+        .drawer-listitem {
+            right: 6rem;
+            box-shadow: $box-shadow;
+            background-color: $info;
+            transition: all 300ms ease-in-out;
+            div,
+            h4 {
+                color: $text-primary;
+                font-weight: 500;
+            }
+        }
+        .drawer-remove-icon {
+            display: flex;
+            transition: all 500ms ease-in-out;
+            opacity: 1;
+            cursor: pointer;
+        }
+    }
 }
 
 #footer {

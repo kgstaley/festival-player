@@ -97,7 +97,6 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
                 <Button
                     style={{ marginRight: '1.5rem', backgroundColor: SPOTIFY_GREEN }}
                     variant="contained"
-                    // color="secondary"
                     onClick={handleLoginRedirect}
                     title="Connect with Spotify"
                 >

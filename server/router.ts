@@ -77,7 +77,6 @@ router.get(`/spotify/tracks`, (req: any, res) => {
     spotifyWebApi
         .getTracks(ids, market)
         .then((data) => {
-            logger('data returned for getTracks from spotify web api', data);
             res.json(data.body.tracks);
         })
         .catch((err) => {
@@ -91,14 +90,12 @@ router.get(`/spotify/search`, (req: any, res) => {
     if (!req.query) res.sendStatus(400);
     const { q, types, market, limit = 25, offset = 0 } = req.query;
     const options = { market, limit, offset };
-    logger('req.query', req.query);
 
     const parsedTypes = JSON.parse(types);
 
     spotifyWebApi
         .search(q, parsedTypes, options)
         .then((data) => {
-            logger('data from search', data);
             res.json(data.body);
         })
         .catch((err) => {
@@ -119,7 +116,6 @@ router.post(`/spotify/playlist/new`, (req: any, res) => {
     spotifyWebApi
         .createPlaylist(name, options)
         .then((data) => {
-            logger('data from create playlist', data);
             res.json(data.body);
         })
         .catch((err) => {
@@ -128,6 +124,7 @@ router.post(`/spotify/playlist/new`, (req: any, res) => {
         });
 });
 
+// add tracks to playlist
 router.post(`/spotify/playlist/:playlistId/tracks/new`, (req, res) => {
     const { playlistId } = req.params;
     const { uris } = req.body;
@@ -146,6 +143,22 @@ router.post(`/spotify/playlist/:playlistId/tracks/new`, (req, res) => {
         });
 });
 
+// get artist's top tracks
+router.get(`/spotify/artist/:artistId/tops`, (req, res) => {
+    const { artistId } = req.params;
+    if (!artistId) res.sendStatus(res.statusCode);
+
+    spotifyWebApi
+        .getArtistTopTracks(artistId, 'US')
+        .then((data) => {
+            res.json(data.body);
+        })
+        .catch((err) => {
+            logger(err);
+            res.sendStatus(res.statusCode);
+        });
+});
+
 // get list of current user's playlists
 router.get('/spotify/playlists', (req: any, res) => {
     // const { offset, limit } = req.query;
@@ -155,7 +168,6 @@ router.get('/spotify/playlists', (req: any, res) => {
     spotifyWebApi
         .getUserPlaylists({ offset, limit })
         .then((data) => {
-            logger('data for get current user playlists', data);
             res.json(data.body);
         })
         .catch((err) => {
@@ -174,7 +186,6 @@ router.get('/spotify/playlist/:playlistId', (req: any, res) => {
     spotifyWebApi
         .getPlaylist(playlistId, options)
         .then((data) => {
-            logger('data returned from get playlist', data);
             res.json(data.body);
         })
         .catch((err) => {
@@ -193,7 +204,6 @@ router.get('/spotify/me/top/:type', (req: any, res) => {
         spotifyWebApi
             .getMyTopArtists({ time_range, offset, limit })
             .then((data) => {
-                logger('data for get my top artists', data);
                 res.json(data.body);
             })
             .catch((err) => {
@@ -204,7 +214,6 @@ router.get('/spotify/me/top/:type', (req: any, res) => {
         spotifyWebApi
             .getMyTopTracks({ time_range, offset, limit })
             .then((data) => {
-                logger('data for get my top tracks', data);
                 res.json(data.body);
             })
             .catch((err) => {

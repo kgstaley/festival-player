@@ -1,11 +1,11 @@
 import { Container, Typography, useTheme } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { ArtistItem, FadeIn, TrackItem } from '.';
-import { capitalize, logger, usePrevious } from '../../common-util';
-import { AppCtx } from '../../context';
-import { Artist, Track } from '../../interfaces';
-import { getTopArtists } from '../../services/spotify';
+import { capitalize, logger, usePrevious } from '../common-util';
+import { AppCtx } from '../context';
+import { getTopArtists } from '../services/spotify';
+import { SpotifyRes } from '../type-defs';
+import { ArtistItem, FadeIn, TrackItem } from './common-ui';
 
 export const TopArtistsAndTracks = ({ type }: { type: string }) => {
     const [init, setInit] = useState(true);
@@ -55,7 +55,7 @@ export const TopArtistsAndTracks = ({ type }: { type: string }) => {
     //#region renders
 
     const renderTop = useCallback(
-        (top: Artist | Track) => {
+        (top: SpotifyRes) => {
             if (!top) return null;
 
             return (
