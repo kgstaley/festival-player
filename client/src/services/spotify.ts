@@ -50,7 +50,7 @@ export const createPlaylist = async (name: string, description?: string) => {
     }
 };
 
-export const addItemsToPlaylist = async (playlistId: string, trackUris: readonly string[]) => {
+export const addTracksToPlaylist = async (playlistId: string, trackUris: readonly string[]) => {
     try {
         const config = {
             url: `${rootApi}/playlist/${playlistId}/tracks/new`,
@@ -61,7 +61,7 @@ export const addItemsToPlaylist = async (playlistId: string, trackUris: readonly
 
         return data;
     } catch (err) {
-        logger('error thrown in addItemsToPlaylist', err);
+        logger('error thrown in addTracksToPlaylist', err);
         throw err;
     }
 };
