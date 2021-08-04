@@ -145,11 +145,11 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
     // main render
     return (
         <React.Fragment>
-            <AppBar position="static" style={{ padding: '0.5rem' }}>
+            <AppBar position="static" className="flex" style={{ padding: '0.5rem', width: '100%' }}>
                 <div className="appbar-outer">
                     <div className="appbar-inner">
                         {renderUserInfo()}
-                        <div style={{ paddingLeft: '2rem' }}>
+                        <div className="flex flex-1 flex-col" style={{ paddingLeft: '2rem' }}>
                             <h3 className="header-title" style={{ textShadow: '1px 1px 10px 4px rgba(0, 0, 0, 0.3)' }}>
                                 festival.me
                             </h3>
@@ -158,7 +158,7 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
                     {renderButtons()}
                 </div>
             </AppBar>
-            <div>{children}</div>
+            <div className="flex flex-col flex-1">{children}</div>
         </React.Fragment>
     );
 };

@@ -80,13 +80,9 @@ const App = (props: any) => {
         return (
             <React.Fragment>
                 <div
-                    className="flex flex-1 flex-col"
-                    style={{
-                        justifyContent: 'center',
-                        textAlign: 'center',
-                        alignSelf: 'flex-end',
-                        color: theme.palette.info.main,
-                    }}
+                    id="footer"
+                    className="flex flex-1 flex-col flex-justify-center"
+                    style={{ color: theme.palette.info.dark }}
                 >
                     Copyright © 2021 Kerry Staley. All rights reserved.
                 </div>
@@ -106,8 +102,8 @@ const App = (props: any) => {
                         <Container>
                             <Switch>{mapRenderRoutes()}</Switch>
                         </Container>
+                        {renderFooter()}
                     </NavBar>
-                    {renderFooter()}
                 </Suspense>
             </div>
         </ThemeProvider>

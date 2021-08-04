@@ -85,6 +85,8 @@ $spotify-green: #1db954;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    width: 100%;
+    min-width: 100%;
 }
 
 .appbar-inner {
@@ -95,6 +97,8 @@ $spotify-green: #1db954;
 }
 
 .header-title {
+    display: flex;
+    flex-shrink: 2;
     font-family: monospace;
     font-size: 2.5rem;
     font-weight: 300;
@@ -139,6 +143,10 @@ $spotify-green: #1db954;
 
 .flex-align-center {
     align-items: center;
+}
+
+.flex-justify-center {
+    justify-content: center;
 }
 
 .option-container {
@@ -212,4 +220,13 @@ $spotify-green: #1db954;
     justify-content: space-between;
     box-shadow: $box-shadow;
     margin-bottom: 1rem;
+}
+
+#footer {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 70%;
+    left: 25%;
+    right: 25%;
+    text-align: center;
 }

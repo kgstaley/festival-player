@@ -1,4 +1,3 @@
-import { Container } from '@material-ui/core';
 import React, { BaseSyntheticEvent, useCallback, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { TransitionGroup } from 'react-transition-group';
@@ -41,14 +40,14 @@ const Home = (_props: any) => {
             <Helmet>
                 <title>festival.me - Home</title>
             </Helmet>
-            <Container className="body-container">
-                <TransitionGroup id="home-tsg">
+            <TransitionGroup id="home-tsg">
+                <div className="body-container flex-row flex-justify-center">
                     <div className="flex">
                         {renderSideMenu()}
                         <TopArtistsAndTracks type={topType} />
                     </div>
-                </TransitionGroup>
-            </Container>
+                </div>
+            </TransitionGroup>
         </React.Fragment>
     );
 };

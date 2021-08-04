@@ -19,14 +19,7 @@ const Landing = (props: any) => {
     // main render
     return (
         <React.Fragment>
-            <Container
-                style={{
-                    display: 'flex',
-                    flex: 1,
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                }}
-            >
+            <Container className="flex flex-1 flex-col flex-justitfy-center">
                 <div
                     className="body-container"
                     style={{
@@ -40,12 +33,8 @@ const Landing = (props: any) => {
                     <Typography
                         variant="h1"
                         component="h2"
-                        style={{
-                            display: 'flex',
-                            flex: 1,
-                            color: palette.text.primary,
-                            fontFamily: 'monospace',
-                        }}
+                        className="flex"
+                        style={{ color: palette.text.primary, fontFamily: 'monospace', flexShrink: 2 }}
                     >
                         Welcome to festival.me!
                     </Typography>
@@ -53,21 +42,12 @@ const Landing = (props: any) => {
                         <Typography
                             variant="h5"
                             component="h5"
-                            style={{
-                                color: palette.text.primary,
-                                fontFamily: 'monospace',
-                            }}
+                            style={{ color: palette.text.primary, fontFamily: 'monospace' }}
                         >
                             Autogenerate playlists with your favorite artists, albums, or festival lineups.
                         </Typography>
                         <div style={{ paddingTop: '1rem' }}>
-                            <span
-                                style={{
-                                    fontSize: '14px',
-                                    color: palette.text.primary,
-                                    fontFamily: 'monospace',
-                                }}
-                            >
+                            <span style={{ fontSize: '14px', color: palette.text.primary, fontFamily: 'monospace' }}>
                                 ( You must login to Spotify to use this app. )
                             </span>
                         </div>
