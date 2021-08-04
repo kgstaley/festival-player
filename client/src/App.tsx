@@ -23,6 +23,7 @@ const App = (props: any) => {
 
     const fetchMe = useCallback(async () => {
         try {
+            dispatch({ type: actions.SET_LOADING_USER, loading: true });
             const res = await getMe();
             logger('res in fetchMe', res);
 
@@ -37,22 +38,29 @@ const App = (props: any) => {
         } catch (err) {
             logger('error', err);
             throw err;
+        } finally {
+            dispatch({ type: actions.SET_LOADING_USER, loading: false });
         }
     }, [dispatch]);
 
     useEffect(() => {
-        if (!state.user && !location.pathname.includes('/logout')) {
+        if (
+            !state.user &&
+            !state.loading &&
+            !location.pathname.includes('/logout') &&
+            !location.pathname.includes('/welcome')
+        ) {
             logger('fetching user ');
             fetchMe();
         }
-    }, [state.user, fetchMe, location.pathname]);
+    }, [state.user, fetchMe, location.pathname, state.loading]);
 
     const mapRenderRoutes = useCallback(() => {
         const filteredRoutes = !state.isAuthenticated
             ? routes.filter((r) => !r.requiresAuth)
             : routes.filter((r) => r.requiresAuth);
 
-        const redirect = !state.isAuthenticated ? '/' : '/dashboard';
+        const redirect = !state.isAuthenticated ? '/welcome' : '/dashboard';
 
         const routeComps = filteredRoutes.map((route) => {
             const Comp = route.component;

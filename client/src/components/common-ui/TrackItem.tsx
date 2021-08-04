@@ -1,6 +1,6 @@
 import { Typography, useTheme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Track } from '../../interfaces';
+import { Track } from '../../type-defs';
 
 const _Track = (props: Track) => {
     const theme = useTheme();
@@ -49,7 +49,7 @@ const _Track = (props: Track) => {
                         textAlign: 'end',
                     }}
                 >
-                    <span>Type: {album?.album_type}</span>
+                    <div>Type: {props?.type}</div>
                     <div className="flex flex-row" style={{ textAlign: 'right', justifyContent: 'flex-end' }}>
                         Artists:{' '}
                         {artists?.map((a) => (

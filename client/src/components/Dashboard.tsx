@@ -4,9 +4,9 @@ import React, { BaseSyntheticEvent, useCallback, useContext, useEffect, useMemo,
 import { Helmet } from 'react-helmet';
 import { TransitionGroup } from 'react-transition-group';
 import { logger, usePrevious } from '../common-util';
-import { AppCtx, actions } from '../context';
-import { Album, Artist, Track } from '../interfaces';
+import { actions, AppCtx } from '../context';
 import { search } from '../services';
+import { SpotifyRes } from '../type-defs';
 import { FadeIn } from './common-ui';
 
 const emptyAlbum = require('../assets/images/empty-album.jpg').default;
@@ -16,9 +16,9 @@ const Dashboard = (_props: any) => {
     const { palette } = theme;
     const [query, setQuery] = useState('');
     const [loading, setLoading] = useState(false);
-    const [artists, setArtists]: [artists: Array<Artist>, setArtists: any] = useState([]);
-    const [tracks, setTracks]: [tracks: Array<Track>, setTracks: any] = useState([]);
-    const [albums, setAlbums]: [albums: Array<Album>, setAlbums: any] = useState([]);
+    const [artists, setArtists]: [artists: Array<SpotifyRes>, setArtists: any] = useState([]);
+    const [tracks, setTracks]: [tracks: Array<SpotifyRes>, setTracks: any] = useState([]);
+    const [albums, setAlbums]: [albums: Array<SpotifyRes>, setAlbums: any] = useState([]);
     const [readyForRendering, setReadyForRendering] = useState(false);
     const [offset] = useState(0);
     const [limit] = useState(12);
@@ -92,8 +92,7 @@ const Dashboard = (_props: any) => {
     }, [debouncedSearch]);
 
     const handleSelected = useCallback(
-        (selected: Artist | Track | Album) => {
-            logger('selected in handleSelected', selected);
+        (selected: SpotifyRes) => {
             const found = state.selected.find((s: any) => isEqual(s.id, selected.id));
             if (!!!found) dispatch({ type: actions.ADD_SELECTED, selected });
             else dispatch({ type: actions.REMOVE_SELECTED, selected });
@@ -111,7 +110,7 @@ const Dashboard = (_props: any) => {
 
     //#region helpers
     const checkSelected = useCallback(
-        (item: Artist | Track | Album) => {
+        (item: SpotifyRes) => {
             return !!state.selected.find((a: any) => isEqual(a.id, item.id));
         },
         [state.selected],
@@ -149,7 +148,7 @@ const Dashboard = (_props: any) => {
         );
     }, [query, handleSearchChange, palette, handleKeyUp, handleClear]);
 
-    const renderMedia = useCallback((media: any, alt: string) => {
+    const renderMedia = useCallback((media: string, alt: string) => {
         if (!media) return null;
         return (
             <div className="flex flex-1 flex-row">
@@ -161,7 +160,7 @@ const Dashboard = (_props: any) => {
     }, []);
 
     const renderArtist = useCallback(
-        (artist: Artist) => {
+        (artist: SpotifyRes) => {
             if (!artist) return null;
             const avatar = artist.images?.length ? artist.images[0].url : emptyAlbum;
             const selectArtist = () => handleSelected(artist);
@@ -194,7 +193,7 @@ const Dashboard = (_props: any) => {
     }, [renderArtist, artists]);
 
     const renderTrack = useCallback(
-        (track: Track) => {
+        (track: SpotifyRes) => {
             if (!track) return null;
             const media = !!track.album?.images?.length ? track.album.images[0].url : emptyAlbum;
             const selectTrack = () => handleSelected(track);
@@ -228,7 +227,7 @@ const Dashboard = (_props: any) => {
     }, [tracks, renderTrack]);
 
     const renderAlbum = useCallback(
-        (album: Album) => {
+        (album: SpotifyRes) => {
             if (!album) return null;
             const media = !!album.images?.length ? album.images[0].url : emptyAlbum;
             const selectAlbum = () => handleSelected(album);

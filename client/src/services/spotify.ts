@@ -55,6 +55,7 @@ export const addTracksToPlaylist = async (playlistId: string, trackUris: readonl
         const config = {
             url: `${rootApi}/playlist/${playlistId}/tracks/new`,
             data: { uris: trackUris },
+            method: 'POST',
         };
 
         const { data } = await client(config);
@@ -62,6 +63,21 @@ export const addTracksToPlaylist = async (playlistId: string, trackUris: readonl
         return data;
     } catch (err) {
         logger('error thrown in addTracksToPlaylist', err);
+        throw err;
+    }
+};
+
+export const getArtistTopTracks = async (artistId: string) => {
+    try {
+        const config = {
+            url: `${rootApi}/artist/${artistId}/tops`,
+            method: 'GET',
+        };
+
+        const { data } = await client(config);
+        return data;
+    } catch (err) {
+        logger('error thrown in getArtistTopTracks', err);
         throw err;
     }
 };

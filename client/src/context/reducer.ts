@@ -14,8 +14,14 @@ export const reducer = (state: any, action: any) => {
             return { ...state, selected: [...state.selected, action.selected] };
         case actions.REMOVE_SELECTED:
             return { ...state, selected: state.selected.filter((s: any) => !isEqual(s.id, action.selected.id)) };
+        case actions.RESET_SELECTED:
+            return { ...state, selected: [], openDrawer: false };
         case actions.TOGGLE_DRAWER:
             return { ...state, openDrawer: !state.openDrawer };
+        case actions.SET_LOADING_USER:
+            return { ...state, loading: action.loading };
+        case actions.CREATING_PLAYLIST:
+            return { ...state, creatingPlaylist: action.creatingPlaylist };
         default:
             break;
     }

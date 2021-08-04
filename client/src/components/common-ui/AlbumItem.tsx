@@ -1,8 +1,9 @@
 import { Typography, useTheme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Artist } from '../../type-defs';
+import moment from 'moment';
+import { Album } from '../../type-defs';
 
-const _Artist = (props: Artist) => {
+const _Album = (props: Album) => {
     const theme = useTheme();
     const { palette } = theme;
     const [avatar, setAvatar] = useState('');
@@ -38,12 +39,13 @@ const _Artist = (props: Artist) => {
                         textAlign: 'end',
                     }}
                 >
-                    <div>Followers: {props.followers?.total?.toString() || ''}</div>
-                    <div>Genres: {props.genres?.map((g) => g).join(', ')}</div>
+                    <div>Type: {props?.type}</div>
+                    <div>Tracks: {props?.total_tracks?.toString()}</div>
+                    <div>Release Date: {moment(props.release_date).format('DD MMM YYYY')}</div>
                 </div>
             </div>
         </React.Fragment>
     );
 };
 
-export const ArtistItem = React.memo(_Artist);
+export const AblumItem = React.memo(_Album);

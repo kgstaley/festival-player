@@ -17,7 +17,7 @@ export const routes = [
     },
     {
         id: 'landing',
-        paths: ['/', '/logout'],
+        paths: ['/welcome', '/logout'],
         exact: true,
         component: lazy(() => import('../components/Landing')),
         requiresAuth: false,
