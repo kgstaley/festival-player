@@ -102,10 +102,7 @@ router.get(`/spotify/search`, (req, res) => {
     });
 });
 // create a private playlist
-router.post(`/spotify/playlist/users/:userId/new`, (req, res) => {
-    const { userId } = req.params;
-    if (!userId)
-        res.sendStatus(400);
+router.post(`/spotify/playlist/new`, (req, res) => {
     if (!req.query)
         res.sendStatus(400);
     const { name, description } = req.query;
@@ -122,16 +119,29 @@ router.post(`/spotify/playlist/users/:userId/new`, (req, res) => {
         res.sendStatus(res.statusCode);
     });
 });
-// get list of current user's playlists
-router.get('/spotify/playlists/user/:userId', (req, res) => {
-    const userId = req.params.userId;
-    if (!userId)
+router.post(`/spotify/playlist/:playlistId/tracks/new`, (req, res) => {
+    const { playlistId } = req.params;
+    const { uris } = req.body;
+    if (!uris || !!!uris.length)
         res.sendStatus(400);
+    spotifyWebApi
+        .addTracksToPlaylist(playlistId, uris)
+        .then((data) => {
+        index_1.logger('add tracks to playlist data.body', data.body);
+        res.json(data.body);
+    })
+        .catch((err) => {
+        index_1.logger(err);
+        res.sendStatus(res.statusCode);
+    });
+});
+// get list of current user's playlists
+router.get('/spotify/playlists', (req, res) => {
     // const { offset, limit } = req.query;
     const offset = req.query.offset;
     const limit = req.query.limit;
     spotifyWebApi
-        .getUserPlaylists(userId, { offset, limit })
+        .getUserPlaylists({ offset, limit })
         .then((data) => {
         index_1.logger('data for get current user playlists', data);
         res.json(data.body);
