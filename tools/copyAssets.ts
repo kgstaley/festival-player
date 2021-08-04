@@ -1,3 +1,3 @@
-import * as shell from "shelljs";
+import * as shell from 'shelljs';
 
-shell.cp("-R", "dist/");
+shell.cp('-R', 'dist/');

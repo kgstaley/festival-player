@@ -1,8 +1,16 @@
-import { createContext } from "react";
+import { createContext } from 'react';
+import { Album, Artist, Track } from '../interfaces';
 
 interface AppContextInferface {
-  state: any;
-  dispatch: any;
+    state: State;
+    dispatch: any;
+}
+
+interface State {
+    user: any;
+    isAuthenticated: boolean;
+    selected: Array<Artist | Track | Album>;
+    openDrawer: boolean;
 }
 
 export const AppCtx = createContext({} as AppContextInferface);

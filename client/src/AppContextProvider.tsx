@@ -1,25 +1,15 @@
-import PropTypes from "prop-types";
-import { useReducer } from "react";
-import { reducer } from "./context/reducer";
-import { AppCtx } from "./context";
+import PropTypes from 'prop-types';
+import { useReducer } from 'react';
+import { reducer } from './context/reducer';
+import { AppCtx } from './context';
 
-const init = () => ({ user: null, isAuthenticated: false });
+const init = () => ({ user: null, isAuthenticated: false, selected: [] });
 
 export const AppContextProvider = ({ children }: any) => {
-  const [state, dispatch] = useReducer(
-    reducer,
-    { user: null, isAuthenticated: false },
-    init
-  );
+    const [state, dispatch] = useReducer(reducer, { user: null, isAuthenticated: false, selected: [] }, init);
 
-  return (
-    <AppCtx.Provider value={{ state, dispatch }}>{children}</AppCtx.Provider>
-  );
+    return <AppCtx.Provider value={{ state, dispatch }}>{children}</AppCtx.Provider>;
 };
 AppContextProvider.propTypes = {
-  children: PropTypes.oneOfType([
-    PropTypes.node,
-    PropTypes.element,
-    PropTypes.func,
-  ]),
+    children: PropTypes.oneOfType([PropTypes.node, PropTypes.element, PropTypes.func]),
 };

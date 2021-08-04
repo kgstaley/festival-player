@@ -1,2 +1,2 @@
-export * from "./authServices";
-export * from "./spotify";
+export * from './authServices';
+export * from './spotify';
