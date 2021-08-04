@@ -30,8 +30,6 @@ router.get("/auth", (req, res) => {
 });
 router.get("/auth/callback", (req, res) => {
     const { code } = req.query;
-    index_1.logger("req.query", req.query);
-    index_1.logger("code", code);
     if (!code) {
         index_1.logger("no code provided");
         res.sendStatus(400);
@@ -40,7 +38,6 @@ router.get("/auth/callback", (req, res) => {
     spotifyWebApi
         .authorizationCodeGrant(code.toString())
         .then((data) => {
-        index_1.logger("data.body", data.body);
         spotifyWebApi.setAccessToken(data.body.access_token);
         spotifyWebApi.setRefreshToken(data.body.refresh_token);
         res.redirect("http://localhost:8080/dashboard");
@@ -54,7 +51,6 @@ router.get("/auth/me", (req, res) => {
     spotifyWebApi
         .getMe()
         .then((data) => {
-        index_1.logger("data.body", data.body);
         res.json(data.body);
     })
         .catch((err) => {

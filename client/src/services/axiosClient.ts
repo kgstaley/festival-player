@@ -1,18 +1,18 @@
-import { setup } from "axios-cache-adapter";
+import { setup } from 'axios-cache-adapter';
 
 const defaultCacheOptions = {
-  clearOnError: true,
-  clearOnStale: true,
-  // debug: true, // enable to read axios-cache-adapter logs
-  exclude: { query: false },
-  maxAge: 15 * 60 * 1000, // cache retention for query set 15min
+    clearOnError: true,
+    clearOnStale: true,
+    // debug: true, // enable to read axios-cache-adapter logs
+    exclude: { query: false },
+    maxAge: 15 * 60 * 1000, // cache retention for query set 15min
 };
 
 const defaultAxiosOptions = {
-  headers: {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-  },
+    headers: {
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+    },
 };
 
 /**
@@ -29,17 +29,17 @@ const defaultAxiosOptions = {
  * @param {...any} options.rest - any other axios options
  */
 const client = (options: any) => {
-  const cache = {
-    ...defaultCacheOptions,
-    maxAge: options.maxAge || defaultCacheOptions.maxAge,
-    excludeFromCache: options.excludeFromCache === false ? false : true, // default to exclude queries from the cache unless explicitly stated with options.excludeFromCache bool
-  };
+    const cache = {
+        ...defaultCacheOptions,
+        maxAge: options.maxAge || defaultCacheOptions.maxAge,
+        excludeFromCache: options.excludeFromCache === false ? false : true, // default to exclude queries from the cache unless explicitly stated with options.excludeFromCache bool
+    };
 
-  const axiosConfig = { cache, ...defaultAxiosOptions, ...options };
+    const axiosConfig = { cache, ...defaultAxiosOptions, ...options };
 
-  const axios = setup(axiosConfig);
+    const axios = setup(axiosConfig);
 
-  return axios(axiosConfig);
+    return axios(axiosConfig);
 };
 
 export default client;
