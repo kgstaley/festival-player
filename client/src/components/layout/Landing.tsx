@@ -1,13 +1,12 @@
 import { Container, Typography, useTheme } from '@material-ui/core';
-import React, { useContext, useEffect } from 'react';
-import { logger } from '../common-util';
-import { AppCtx } from '../context';
+import React, { useContext, useEffect, useMemo } from 'react';
+import { logger } from '../../common-util';
+import { AppCtx } from '../../context';
 
 const Landing = (props: any) => {
     const theme = useTheme();
     const { state } = useContext(AppCtx);
-
-    const { palette } = theme;
+    const palette = useMemo(() => theme.palette, [theme]);
 
     useEffect(() => {
         logger('state.isAuthenticated in Landing.tsx', state.isAuthenticated);
@@ -19,7 +18,7 @@ const Landing = (props: any) => {
     // main render
     return (
         <React.Fragment>
-            <Container className="flex flex-1 flex-col flex-justitfy-center">
+            <Container className="flex flex-1 flex-col flex-justitfy-center" style={{ minHeight: '88vh' }}>
                 <div
                     className="body-container"
                     style={{

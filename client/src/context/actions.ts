@@ -8,6 +8,7 @@ const SET_LOADING_USER = 'set-loading-user';
 const SET_USER = 'set-user';
 const TOGGLE_DRAWER = 'toggle-drawer';
 const CREATING_PLAYLIST = 'creating-playlist';
+const TOGGLE_OPTIONS_MODAL = 'toggle-options-modal';
 
 export const actions = {
     ADD_SELECTED,
@@ -20,4 +21,5 @@ export const actions = {
     SET_USER,
     TOGGLE_DRAWER,
     CREATING_PLAYLIST,
+    TOGGLE_OPTIONS_MODAL,
 };

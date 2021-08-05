@@ -22,6 +22,8 @@ export const reducer = (state: any, action: any) => {
             return { ...state, loading: action.loading };
         case actions.CREATING_PLAYLIST:
             return { ...state, creatingPlaylist: action.creatingPlaylist };
+        case actions.TOGGLE_OPTIONS_MODAL:
+            return { ...state, openOptionsModal: !state.openOptionsModal };
         default:
             break;
     }
