@@ -8,14 +8,15 @@ import { Redirect, Route, Switch, withRouter } from 'react-router-dom';
 import { TransitionGroup } from 'react-transition-group';
 import { logger } from './common-util';
 import { FadeIn } from './components/common-ui';
-import { NavBar } from './components/index';
+import { NavBar } from './components/layout';
 import { actions, AppCtx } from './context';
 import { routes } from './routes';
 import { getMe } from './services';
 import './styles/styles.scss';
 import { theme } from './styles/theme';
 
-const Drawer = lazy(() => import('./components/Drawer'));
+const Drawer = lazy(() => import('./components/drawer/Drawer'));
+const OptionsModal = lazy(() => import('./components/common-ui/OptionsModal'));
 
 const App = (props: any) => {
     const { state, dispatch } = useContext(AppCtx);
@@ -106,6 +107,7 @@ const App = (props: any) => {
                 </Helmet>
                 <Suspense fallback={<LinearProgress variant="buffer" color="primary" value={20} valueBuffer={50} />}>
                     <NavBar {...props}>
+                        <OptionsModal />
                         <Drawer />
                         <Container>
                             <Switch>{mapRenderRoutes()}</Switch>

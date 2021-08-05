@@ -1,24 +1,36 @@
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 import { faUserAstronaut } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AppBar, Button, useTheme } from '@material-ui/core';
+import { AppBar, Button, Slide, Toolbar, useScrollTrigger, useTheme } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React, { useCallback, useContext } from 'react';
-import { logger } from '../common-util';
-import { AppCtx, actions } from '../context';
-import { logout } from '../services';
+import { logger } from '../../common-util';
+import { actions, AppCtx } from '../../context';
+import { logout } from '../../services';
 
-const NavBar = ({ children, history }: { children: any; history: any }) => {
+const HideOnScrollAppbar = (props: any) => {
+    const { children, window } = props;
+
+    const trigger = useScrollTrigger({ target: window ? window() : undefined });
+
+    // main render
+    return (
+        <Slide appear={false} direction="down" in={!trigger}>
+            {children}
+        </Slide>
+    );
+};
+
+const NavBar = (props: any) => {
     const theme = useTheme();
     const { state, dispatch } = useContext(AppCtx);
     const { palette } = theme;
+    const { children, history } = props;
 
     //#region api calls
     const logOut = useCallback(async () => {
         try {
             const res = await logout();
-
-            logger('logout response', res);
 
             dispatch({ type: actions.LOG_OUT });
 
@@ -82,12 +94,10 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
         if (!state.user) return null;
 
         return (
-            <React.Fragment>
-                <div id="header-userinfo-container">
-                    <div className="avatar-container">{renderAvatar()}</div>
-                    <div id="header-username">{state.user.display_name}</div>
-                </div>
-            </React.Fragment>
+            <div id="header-userinfo-container">
+                <div className="avatar-container">{renderAvatar()}</div>
+                <div id="header-username">{state.user.display_name}</div>
+            </div>
         );
     }, [state.user, renderAvatar]);
 
@@ -95,6 +105,7 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
         if (!state.user)
             return (
                 <Button
+                    className="flex"
                     style={{ marginRight: '1.5rem', backgroundColor: SPOTIFY_GREEN }}
                     variant="contained"
                     onClick={handleLoginRedirect}
@@ -106,11 +117,15 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
             );
 
         return (
-            <Button style={{ marginRight: '1.5rem' }} variant="contained" color="primary" onClick={handleLogout}>
+            <Button
+                variant="contained"
+                style={{ backgroundColor: palette.success.main, color: 'white' }}
+                onClick={handleLogout}
+            >
                 Logout
             </Button>
         );
-    }, [state.user, handleLogout, palette.text.primary, handleLoginRedirect]);
+    }, [state.user, handleLogout, palette, handleLoginRedirect]);
 
     const renderButtons = useCallback(() => {
         if (!state.isAuthenticated) {
@@ -118,9 +133,10 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
         }
 
         return (
-            <div>
+            <div className="flex" style={{ flexGrow: 1, justifyContent: 'flex-end' }}>
                 <Button
-                    style={{ marginRight: '2rem' }}
+                    style={{ marginRight: '1rem' }}
+                    className="flex"
                     variant="contained"
                     color="secondary"
                     onClick={handlePushToHome}
@@ -128,7 +144,8 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
                     Home
                 </Button>
                 <Button
-                    style={{ marginRight: '2rem' }}
+                    style={{ marginRight: '1rem' }}
+                    className="flex"
                     variant="contained"
                     color="secondary"
                     onClick={handlePushToDash}
@@ -144,20 +161,21 @@ const NavBar = ({ children, history }: { children: any; history: any }) => {
     // main render
     return (
         <React.Fragment>
-            <AppBar position="static" className="flex" style={{ padding: '0.5rem', width: '100%' }}>
-                <div className="appbar-outer">
-                    <div className="appbar-inner">
+            <HideOnScrollAppbar {...props}>
+                <AppBar position="fixed" className="flex" style={{ padding: '0.5rem', margin: 0 }}>
+                    <Toolbar className="flex flex-1 flex-align-center">
                         {renderUserInfo()}
-                        <div className="flex flex-1 flex-col" style={{ paddingLeft: '2rem' }}>
-                            <h3 className="header-title" style={{ textShadow: '1px 1px 10px 4px rgba(0, 0, 0, 0.3)' }}>
-                                festival.me
-                            </h3>
-                        </div>
-                    </div>
-                    {renderButtons()}
-                </div>
-            </AppBar>
-            <div className="flex flex-col flex-1">{children}</div>
+                        <h3 className="header-title" style={{ textShadow: '1px 1px 10px 4px rgba(0, 0, 0, 0.3)' }}>
+                            festival.me
+                        </h3>
+                        {renderButtons()}
+                    </Toolbar>
+                </AppBar>
+            </HideOnScrollAppbar>
+            <Toolbar />
+            <div className="flex flex-col" style={{ paddingTop: '4rem' }}>
+                {children}
+            </div>
         </React.Fragment>
     );
 };

@@ -13,6 +13,7 @@ interface State {
     openDrawer: boolean;
     loading: boolean;
     creatingPlaylist: boolean;
+    openOptionsModal: boolean;
 }
 
 export const AppCtx = createContext({} as AppContextInferface);

@@ -1,11 +1,11 @@
-import { Container, Typography, useTheme } from '@material-ui/core';
+import { Typography, useTheme } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useCallback, useContext, useEffect, useState } from 'react';
-import { capitalize, logger, usePrevious } from '../common-util';
-import { AppCtx } from '../context';
-import { getTopArtists } from '../services/spotify';
-import { SpotifyRes } from '../type-defs';
-import { ArtistItem, FadeIn, TrackItem } from './common-ui';
+import { useCallback, useContext, useEffect, useState } from 'react';
+import { capitalize, logger, usePrevious } from '../../common-util';
+import { AppCtx } from '../../context';
+import { getTopArtists } from '../../services/spotify';
+import { SpotifyRes } from '../../type-defs';
+import { ArtistItem, FadeIn, TrackItem } from '../common-ui';
 
 export const TopArtistsAndTracks = ({ type }: { type: string }) => {
     const [init, setInit] = useState(true);
@@ -61,22 +61,16 @@ export const TopArtistsAndTracks = ({ type }: { type: string }) => {
             return (
                 <FadeIn in key={`top-${top.type}-${top.id}`}>
                     <div
-                        className="flex flex-1"
+                        className="top-track-item"
                         key={`top-${top.type}-${top.id}`}
-                        style={{
-                            margin: '1rem',
-                            padding: '1rem',
-                            borderRadius: '10px',
-                            backgroundColor: palette.primary.dark,
-                            paddingLeft: '2rem',
-                            paddingRight: '2rem',
-                        }}
+                        style={{ backgroundColor: palette.primary.dark }}
                     >
                         <div
                             className="flex flex-1 flex-row flex-align-center"
                             style={{ justifyContent: 'space-between' }}
                         >
-                            {top.type === 'artist' ? <ArtistItem {...top} /> : <TrackItem {...top} />}
+                            {top.type === 'artist' && <ArtistItem {...top} />}
+                            {top.type === 'track' && <TrackItem {...top} />}
                         </div>
                     </div>
                 </FadeIn>
@@ -93,25 +87,14 @@ export const TopArtistsAndTracks = ({ type }: { type: string }) => {
 
     // main render
     return (
-        <React.Fragment>
-            <Container>
-                <div
-                    style={{
-                        padding: '3rem',
-                        borderRadius: '10px',
-                        backgroundColor: palette.primary.light,
-                        boxShadow: '2px 2px 10px 1px rgba(0, 0, 0, 0.3)',
-                    }}
-                >
-                    <FadeIn in key={type}>
-                        <Typography variant="h3" component="h3" style={{ fontFamily: 'monospace' }}>
-                            {state.user ? state.user?.display_name : ''}'s Top 10 {capitalize(type)}
-                        </Typography>
-                    </FadeIn>
-                    <div className="flex flex-1 flex-col">{mapRenderTops()}</div>
-                </div>
-            </Container>
-        </React.Fragment>
+        <div id="top-track-artist-container" style={{ backgroundColor: palette.primary.light }}>
+            <FadeIn in key={type}>
+                <Typography variant="h3" component="h3" style={{ fontFamily: 'monospace' }}>
+                    {state.user ? state.user?.display_name : ''}'s Top 10 {capitalize(type)}
+                </Typography>
+            </FadeIn>
+            <div className="flex flex-1 flex-col">{mapRenderTops()}</div>
+        </div>
     );
 };
 
