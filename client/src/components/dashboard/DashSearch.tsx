@@ -31,18 +31,16 @@ const _DashSearch = ({
                     type="text"
                     onKeyUp={handleKeyUp}
                     inputProps={{
-                        style: { color: 'white', border: '1px white solid', borderRadius: '4px' },
+                        style: {
+                            color: palette.primary.main,
+                            border: `${palette.primary.main} 2px solid`,
+                            borderRadius: '4px',
+                        },
                     }}
                 />
-                <Button
-                    variant="contained"
-                    className="flex flex-1 clear-button"
-                    onClick={handleClear}
-                    style={{ marginTop: '1rem', color: 'white', borderColor: 'white' }}
-                    disabled={!!!query}
-                >
-                    <FontAwesomeIcon icon={faTimesCircle} color={palette.success.main} size="sm" />
-                    <div style={{ marginLeft: '8px', fontSize: '12px', color: palette.success.main }}>Clear search</div>
+                <Button variant="contained" className="clear-button" onClick={handleClear} disabled={!!!query}>
+                    <FontAwesomeIcon icon={faTimesCircle} color={palette.secondary.main} size="sm" />
+                    <div>Clear search</div>
                 </Button>
             </div>
         </React.Fragment>

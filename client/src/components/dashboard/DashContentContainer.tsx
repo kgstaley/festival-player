@@ -96,13 +96,11 @@ const DashContent = ({
     const renderArtistList = useCallback(() => {
         if (!artists || !!!artists.length) return null;
         return (
-            <div className="flex flex-1 flex-col" style={{ paddingTop: '2rem' }}>
-                <Typography variant="h5" component="h5" style={{ fontFamily: 'monospace' }}>
-                    Artists:
+            <div className="list-container">
+                <Typography variant="h5" component="h5">
+                    Artists
                 </Typography>
-                <div className="flex flex-1 flex-row" style={{ flexWrap: 'wrap' }}>
-                    {renderArtists()}
-                </div>
+                <div className="card-container">{renderArtists()}</div>
             </div>
         );
     }, [artists, renderArtists]);
@@ -110,13 +108,11 @@ const DashContent = ({
     const renderAlbumList = useCallback(() => {
         if (!albums || !!!albums.length) return null;
         return (
-            <div className="flex flex-1 flex-col" style={{ paddingTop: '2rem' }}>
-                <Typography variant="h5" component="h5" style={{ fontFamily: 'monospace' }}>
-                    Albums:
+            <div className="list-container">
+                <Typography variant="h5" component="h5">
+                    Albums
                 </Typography>
-                <div className="flex flex-1 flex-row" style={{ justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-                    {renderAlbums()}
-                </div>
+                <div className="card-container">{renderAlbums()}</div>
             </div>
         );
     }, [albums, renderAlbums]);
@@ -124,13 +120,11 @@ const DashContent = ({
     const renderTrackList = useCallback(() => {
         if (!tracks || !!!tracks.length) return null;
         return (
-            <div className="flex flex-1 flex-col" style={{ paddingTop: '2rem' }}>
-                <Typography variant="h5" component="h5" style={{ fontFamily: 'monospace' }}>
-                    Tracks:
+            <div className="list-container">
+                <Typography variant="h5" component="h5">
+                    Tracks
                 </Typography>
-                <div className="flex flex-1 flex-row" style={{ justifyContent: 'flex-start', flexWrap: 'wrap' }}>
-                    {renderTracks()}
-                </div>
+                <div className="card-container">{renderTracks()}</div>
             </div>
         );
     }, [tracks, renderTracks]);
@@ -138,7 +132,7 @@ const DashContent = ({
 
     // main render
     return (
-        <div className="flex flex-col">
+        <div className="dash-content-container-outer">
             {renderArtistList()}
             {renderAlbumList()}
             {renderTrackList()}
