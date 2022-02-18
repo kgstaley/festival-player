@@ -92,7 +92,6 @@ const NavBar = (props: any) => {
 
     const renderUserInfo = useCallback(() => {
         if (!state.user) return null;
-
         return (
             <div id="header-userinfo-container">
                 <div className="avatar-container">{renderAvatar()}</div>
@@ -133,26 +132,20 @@ const NavBar = (props: any) => {
         }
 
         return (
-            <div className="flex" style={{ flexGrow: 1, justifyContent: 'flex-end' }}>
-                <Button
-                    style={{ marginRight: '1rem' }}
-                    className="flex"
-                    variant="contained"
-                    color="secondary"
-                    onClick={handlePushToHome}
-                >
-                    Home
-                </Button>
-                <Button
-                    style={{ marginRight: '1rem' }}
-                    className="flex"
-                    variant="contained"
-                    color="secondary"
-                    onClick={handlePushToDash}
-                >
-                    Dashboard
-                </Button>
-                {renderLogin()}
+            <div className="button-container">
+                <div className="nav-button-container">
+                    <Button className="flex" variant="contained" color="secondary" onClick={handlePushToHome}>
+                        Home
+                    </Button>
+                    <Button className="flex" variant="contained" color="secondary" onClick={handlePushToDash}>
+                        Dashboard / Search
+                    </Button>
+                    {renderLogin()}
+                </div>
+                <div className="spotify-header">
+                    <h4>Powered by Spotify</h4>
+                    <FontAwesomeIcon icon={faSpotify} size="2x" color="white" />
+                </div>
             </div>
         );
     }, [state.isAuthenticated, renderLogin, handlePushToDash, handlePushToHome]);
@@ -162,10 +155,10 @@ const NavBar = (props: any) => {
     return (
         <React.Fragment>
             <HideOnScrollAppbar {...props}>
-                <AppBar position="fixed" className="flex" style={{ padding: '0.5rem', margin: 0 }}>
-                    <Toolbar className="flex flex-1 flex-align-center">
+                <AppBar position="fixed" className="app-bar" style={{ padding: '0.5rem', margin: 0 }}>
+                    <Toolbar className="header-container">
                         {renderUserInfo()}
-                        <h3 className="header-title" style={{ textShadow: '1px 1px 10px 4px rgba(0, 0, 0, 0.3)' }}>
+                        <h3 className="title" style={{ textShadow: '1px 1px 10px 4px rgba(0, 0, 0, 0.3)' }}>
                             festival.me
                         </h3>
                         {renderButtons()}

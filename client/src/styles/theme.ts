@@ -2,14 +2,16 @@ import { createTheme } from '@material-ui/core';
 import Color from 'color';
 import { logger } from '../common-util';
 
-const primary = '#6A7B76';
-const secondary = '#8B9D83';
-const info = Color('#BEB0A7').lighten(0.1).hex().toString();
-const success = '#3A4E48';
+const primary = '#003049';
+const secondary = '#D62828';
+const info = Color('#EAE2B7').lighten(0.1).hex().toString();
+const success = '#FCBF49';
+const tertiary = '#F77F00';
 const text = {
-    primary: '#040303',
-    secondary: '#3A4E48',
-    disabled: '#BEB0A7',
+    primary,
+    secondary,
+    tertiary,
+    disabled: info,
 };
 
 const colorArray = [{ primary }, { secondary }, { info }, { success }];

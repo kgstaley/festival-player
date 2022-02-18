@@ -8,6 +8,7 @@ import { actions, AppCtx } from '../../context';
 import { search } from '../../services';
 import { SpotifyRes } from '../../type-defs';
 import { DashSearch, DashContentContainer } from './index';
+import { toasts } from '../common-ui';
 
 const Dashboard = (_props: any) => {
     //#region context and state
@@ -31,7 +32,7 @@ const Dashboard = (_props: any) => {
     const fetchSearchResults = useCallback(async () => {
         try {
             if (loading || !!!query.length) return;
-            logger('firing fetch search results');
+            logger('fetchSearchResults: firing ===');
             setLoading(true);
             setReadyForRendering(false);
             const res = await search(query, types, limit, offset);
@@ -41,12 +42,13 @@ const Dashboard = (_props: any) => {
 
             const { artists, tracks, albums } = res;
 
-            setArtists(artists.items || []);
-            setAlbums(albums.items || []);
-            setTracks(tracks.items || []);
+            setArtists(artists?.items || []);
+            setAlbums(albums?.items || []);
+            setTracks(tracks?.items || []);
             return res;
         } catch (err) {
-            logger('error thrown in fetchSearchResults', err);
+            logger('fetchSearchResults: error thrown in fetchSearchResults', err);
+            toasts.error(`Error thrown: ${err}`, 'fetchSearchResults');
             throw err;
         } finally {
             setLoading(false);
@@ -56,14 +58,14 @@ const Dashboard = (_props: any) => {
     //#endregion
 
     //#region handlers
-    const debouncedSearch = useMemo(() => debounce(fetchSearchResults, 800), [fetchSearchResults]);
+    const debouncedSearch = useMemo(() => debounce(fetchSearchResults, 1000), [fetchSearchResults]);
 
     const handleSearchChange = useCallback(
         (e: BaseSyntheticEvent) => {
             e.preventDefault();
             e.stopPropagation();
             setQuery(e.target.value);
-            if (e.target.value) {
+            if (!!e.target.value) {
                 debouncedSearch();
             }
         },
@@ -74,7 +76,6 @@ const Dashboard = (_props: any) => {
         (e: any) => {
             e.preventDefault();
             e.stopPropagation();
-
             if (e.keyCode === 13) {
                 setQuery(e.target.value);
                 fetchSearchResults();
@@ -125,8 +126,8 @@ const Dashboard = (_props: any) => {
             </Helmet>
             <Container style={{ minHeight: '90vh' }}>
                 <div style={{ marginTop: '4rem' }}>
-                    <div className="flex flex-1 flex-col dashboard-input-container">
-                        <h3 className="header-title" style={{ fontSize: '1.5rem' }}>
+                    <div className="dashboard-input-container">
+                        <h3 className="title">
                             Auto-generate playlists based on a collection of your favorite artists, albums or tracks
                         </h3>
                         <DashSearch
