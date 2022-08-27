@@ -1,7 +1,7 @@
 import { Typography, useTheme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
 import moment from 'moment';
-import { Album } from '../../type-defs';
+import { Album } from '../../types';
 
 const _Album = (props: Album) => {
     const theme = useTheme();
@@ -21,18 +21,13 @@ const _Album = (props: Album) => {
                 <img key={avatar} className="avatar" src={avatar} alt={props.name} />
             </div>
             <div className="flex flex-col" style={{ justifyContent: 'flex-end', textAlign: 'end' }}>
-                <Typography
-                    variant="h4"
-                    component="h4"
-                    style={{ color: palette.info.light, fontFamily: 'monospace', paddingBottom: '0.5rem' }}
-                >
+                <Typography variant="h4" component="h4" style={{ color: palette.info.light, paddingBottom: '0.5rem' }}>
                     {props.name}
                 </Typography>
                 <div
                     className="flex flex-col"
                     style={{
                         fontWeight: 300,
-                        fontFamily: 'monospace',
                         fontSize: '12px',
                         color: palette.info.light,
                         justifyContent: 'flex-end',

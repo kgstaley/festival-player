@@ -1,6 +1,6 @@
 import { Typography, useTheme } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
-import { Track } from '../../type-defs';
+import { Track } from '../../types';
 
 const _Track = (props: Track) => {
     const theme = useTheme();
@@ -32,7 +32,6 @@ const _Track = (props: Track) => {
                     component="h4"
                     style={{
                         color: palette.info.light,
-                        fontFamily: 'monospace',
                         paddingBottom: '0.5rem',
                     }}
                 >
@@ -42,7 +41,6 @@ const _Track = (props: Track) => {
                     className="flex flex-col"
                     style={{
                         fontWeight: 300,
-                        fontFamily: 'monospace',
                         fontSize: '12px',
                         color: palette.info.light,
                         justifyContent: 'flex-end',

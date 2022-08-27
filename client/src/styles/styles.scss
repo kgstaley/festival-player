@@ -1,12 +1,12 @@
-$primary: #003049;
-$secondary: #d62828;
-$info: #eae2b7;
-$success: #fcbf49;
-$tertiary: #f77f00;
+$primary: #134074;
+$secondary: #8da9c4;
+$info: #eef4ed;
+$success: #0b2545;
+$tertiary: #13315c;
 
 $text-primary: #040303;
-$text-secondary: #3a4e48;
-$text-disabled: $info;
+$text-secondary: $info;
+$text-disabled: $tertiary;
 
 $box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.3);
 
@@ -16,10 +16,10 @@ $dark-opacity-background-color: rgba(0, 0, 0, 0.3);
 
 body {
     background-color: $info;
+    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 h5 {
-    font-family: monospace;
     font-size: 1.5rem;
     font-weight: 400;
     margin: 0;
@@ -75,7 +75,7 @@ h5 {
     display: flex;
     flex: 1;
     flex-direction: column;
-    background-color: $success;
+    background-color: $secondary;
     padding: 2rem;
     border-radius: 10px;
     box-shadow: $box-shadow;
@@ -134,7 +134,6 @@ h5 {
                 color: white;
                 padding-top: 0.5rem;
                 padding-bottom: 0.5rem;
-                font-family: monospace;
             }
         }
         .button-container {
@@ -169,7 +168,6 @@ h5 {
 .header-title {
     display: flex;
     flex: 1;
-    font-family: monospace;
     font-size: 2.5rem;
     font-weight: 300;
     color: white;
@@ -268,7 +266,6 @@ h5 {
 #drawer-header {
     display: flex;
     flex-shrink: 2;
-    font-family: monospace;
     color: white;
     padding: 1rem 1.5rem;
     justify-content: space-between;
@@ -393,7 +390,6 @@ h5 {
             color: $text-primary;
             box-shadow: $box-shadow;
             justify-content: center;
-            font-family: monospace !important;
         }
         .card-container {
             display: flex;

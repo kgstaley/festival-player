@@ -2,11 +2,11 @@ import { createTheme } from '@material-ui/core';
 import Color from 'color';
 import { logger } from '../common-util';
 
-const primary = '#003049';
-const secondary = '#D62828';
-const info = Color('#EAE2B7').lighten(0.1).hex().toString();
-const success = '#FCBF49';
-const tertiary = '#F77F00';
+const primary = '#134074';
+const secondary = '#8da9c4';
+const info = Color('#eef4ed').lighten(0.1).hex().toString();
+const success = '#0b2545';
+const tertiary = '#13315c';
 const text = {
     primary,
     secondary,

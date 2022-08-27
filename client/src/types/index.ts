@@ -3,7 +3,7 @@ interface BaseSpotifyRes {
     href: string;
     id: string;
     name: string;
-    type: 'artist' | 'track' | 'album';
+    type: SpotifyResponseType;
     uri: string;
 }
 
@@ -26,7 +26,14 @@ interface ExternalIds {
     isrc: string;
 }
 
+export enum SpotifyResponseType {
+    Artist = 'ARTIST',
+    Album = 'ALBUM',
+    Track = 'TRACK',
+}
+
 export interface Artist extends BaseSpotifyRes {
+    type: SpotifyResponseType.Artist;
     followers: Followers;
     genres: Array<string>;
     images: Array<Image>;
@@ -34,6 +41,7 @@ export interface Artist extends BaseSpotifyRes {
 }
 
 export interface Track extends BaseSpotifyRes {
+    type: SpotifyResponseType.Track;
     album: Album;
     artists: Array<Artist>;
     available_markets: Array<string>;
@@ -50,6 +58,7 @@ export interface Track extends BaseSpotifyRes {
 }
 
 export interface Album extends BaseSpotifyRes {
+    type: SpotifyResponseType.Album;
     album_type: string;
     artists: Array<Artist>;
     available_markets: Array<string>;
@@ -62,4 +71,4 @@ export interface Album extends BaseSpotifyRes {
     tracks: Array<Track>;
 }
 
-export type SpotifyRes = Artist & Track & Album;
+export type SpotifyRes = Artist | Track | Album;

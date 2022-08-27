@@ -4,7 +4,7 @@ import { Button, Drawer, List, ListItem } from '@material-ui/core';
 import { Palette } from '@material-ui/core/styles/createPalette';
 import React, { useCallback, useContext } from 'react';
 import { AppCtx } from '../../context';
-import { SpotifyRes } from '../../type-defs';
+import { SpotifyRes } from '../../types';
 import { AblumItem, ArtistItem, TrackItem } from '../common-ui';
 
 const DrawerContent = ({
@@ -126,9 +126,7 @@ const DrawerContent = ({
             >
                 <div id="drawer-header" style={{ backgroundColor: palette.success.dark }}>
                     <div id="drawer-header-text">
-                        <h5 className="flex flex-align-center" style={{ fontFamily: 'monospace' }}>
-                            {state.selected.length} Selected Items:
-                        </h5>
+                        <h5 className="flex flex-align-center">{state.selected.length} Selected Items:</h5>
                         <div>
                             <span>{artistCount} artists, </span>
                             <span>{trackCount} tracks, </span>

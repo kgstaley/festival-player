@@ -6,7 +6,7 @@ import React, { useCallback, useContext, useEffect, useMemo, useState } from 're
 import { logger } from '../../common-util';
 import { actions, AppCtx } from '../../context';
 import { addTracksToPlaylist, createPlaylist, getArtistTopTracks } from '../../services';
-import { Album, Artist, SpotifyRes, Track } from '../../type-defs';
+import { Album, Artist, SpotifyRes, Track } from '../../types';
 import { alerts } from '../common-ui';
 import { DrawerContentContainer } from './index';
 

@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { SpotifyRes } from '../type-defs';
+import { SpotifyRes } from '../types';
 
 interface AppContextInferface {
     state: State;

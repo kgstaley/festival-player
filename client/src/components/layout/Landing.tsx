@@ -33,20 +33,16 @@ const Landing = (props: any) => {
                         variant="h1"
                         component="h2"
                         className="flex"
-                        style={{ color: palette.text.primary, fontFamily: 'monospace', flexShrink: 2 }}
+                        style={{ color: palette.text.primary, flexShrink: 2 }}
                     >
                         Welcome to festival.me!
                     </Typography>
                     <div style={{ paddingTop: '1rem' }}>
-                        <Typography
-                            variant="h5"
-                            component="h5"
-                            style={{ color: palette.text.primary, fontFamily: 'monospace' }}
-                        >
+                        <Typography variant="h5" component="h5" style={{ color: palette.text.primary }}>
                             Autogenerate playlists with your favorite artists, albums, or festival lineups.
                         </Typography>
                         <div style={{ paddingTop: '1rem' }}>
-                            <span style={{ fontSize: '14px', color: palette.text.primary, fontFamily: 'monospace' }}>
+                            <span style={{ fontSize: '14px', color: palette.text.primary }}>
                                 ( You must login to Spotify to use this app. )
                             </span>
                         </div>

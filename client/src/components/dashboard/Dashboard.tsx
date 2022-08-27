@@ -1,12 +1,12 @@
 import { Container, useTheme } from '@material-ui/core';
 import { debounce, isEqual } from 'lodash';
-import React, { BaseSyntheticEvent, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { TransitionGroup } from 'react-transition-group';
 import { logger, usePrevious } from '../../common-util';
 import { actions, AppCtx } from '../../context';
 import { search } from '../../services';
-import { SpotifyRes } from '../../type-defs';
+import { SpotifyRes } from '../../types';
 import { DashSearch, DashContentContainer } from './index';
 import { toasts } from '../common-ui';
 
@@ -61,11 +61,9 @@ const Dashboard = (_props: any) => {
     const debouncedSearch = useMemo(() => debounce(fetchSearchResults, 1000), [fetchSearchResults]);
 
     const handleSearchChange = useCallback(
-        (e: BaseSyntheticEvent) => {
-            e.preventDefault();
-            e.stopPropagation();
-            setQuery(e.target.value);
-            if (!!e.target.value) {
+        (query: string) => {
+            setQuery(query);
+            if (!!query) {
                 debouncedSearch();
             }
         },

@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { capitalize, logger, usePrevious } from '../../common-util';
 import { AppCtx } from '../../context';
 import { getTopArtists } from '../../services/spotify';
-import { SpotifyRes } from '../../type-defs';
+import { SpotifyRes } from '../../types';
 import { ArtistItem, FadeIn, TrackItem } from '../common-ui';
 
 export const TopArtistsAndTracks = ({ type }: { type: string }) => {
@@ -89,7 +89,11 @@ export const TopArtistsAndTracks = ({ type }: { type: string }) => {
     return (
         <div id="top-track-artist-container" style={{ backgroundColor: palette.primary.light }}>
             <FadeIn in key={type}>
-                <Typography variant="h3" component="h3" style={{ fontFamily: 'monospace' }}>
+                <Typography
+                    variant="h3"
+                    component="h3"
+                    style={{ fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif' }}
+                >
                     {state.user ? state.user?.display_name : ''}'s Top 10 {capitalize(type)}
                 </Typography>
             </FadeIn>

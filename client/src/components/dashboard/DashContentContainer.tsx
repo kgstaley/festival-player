@@ -1,7 +1,7 @@
 import { Typography } from '@material-ui/core';
 import { Palette } from '@material-ui/core/styles/createPalette';
 import React, { useCallback } from 'react';
-import { SpotifyRes } from '../../type-defs';
+import { SpotifyRes, SpotifyResponseType } from '../../types';
 import { FadeIn } from '../common-ui';
 
 const emptyAlbum = require('../../assets/images/empty-album.jpg').default;
@@ -41,14 +41,14 @@ const DashContent = ({
             let media = '';
             let byLine = '';
             switch (item.type) {
-                case 'artist':
+                case SpotifyResponseType.Artist:
                     media = item.images?.length ? item.images[0].url : emptyAlbum;
                     break;
-                case 'track':
+                case SpotifyResponseType.Track:
                     media = !!item.album?.images?.length ? item.album.images[0].url : emptyAlbum;
                     byLine = `by ${item.artists?.map((a) => a.name).join(', ')}`;
                     break;
-                case 'album':
+                case SpotifyResponseType.Album:
                     media = !!item.images?.length ? item.images[0].url : emptyAlbum;
                     byLine = `by ${item.artists?.map((a) => a.name).join(', ')}`;
                     break;
