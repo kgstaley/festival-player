@@ -189,10 +189,10 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/lodash@^4.14.187":
-  version "4.14.187"
-  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.187.tgz#122ff0a7192115b4c1a19444ab4482caa77e2c9d"
-  integrity sha512-MrO/xLXCaUgZy3y96C/iOsaIqZSeupyTImKClHunL5GrmaiII2VwvWmLBu2hwa0Kp0sV19CsyjtrTc/Fx8rg/A==
+"@types/lodash@^4.14.188":
+  version "4.14.188"
+  resolved "https://registry.yarnpkg.com/@types/lodash/-/lodash-4.14.188.tgz#e4990c4c81f7c9b00c5ff8eae389c10f27980da5"
+  integrity sha512-zmEmF5OIM3rb7SbLCFYoQhO4dGt2FRM9AMkxvA3LaADOF1n8in/zGJlWji9fmafLoNyz+FoL6FE0SLtGIArD7w==
 
 "@types/mime@*":
   version "3.0.1"
@@ -1698,10 +1698,10 @@ node-bin-setup@^1.0.0:
   resolved "https://registry.yarnpkg.com/node-bin-setup/-/node-bin-setup-1.1.3.tgz#d45d5220e3b2ecc3a94263a56116f727f6c1bb14"
   integrity sha512-opgw9iSCAzT2+6wJOETCpeRYAQxSopqQ2z+N6BXwIMsQQ7Zj5M8MaafQY8JMlolRR6R1UXg2WmhKp0p9lSOivg==
 
-node@14.21.0:
-  version "14.21.0"
-  resolved "https://registry.yarnpkg.com/node/-/node-14.21.0.tgz#8d44e235e55fce09732e61ce65302615deb8e563"
-  integrity sha512-2uqYA9wsGorHxo+ioIhDePZbpwc7Rd6mrfddEDNGGOZ34ANCxlA+S5gDdvgEu1Nml7Bwgh8re7cmTcBT8sZ2RQ==
+node@^19.0.1:
+  version "19.0.1"
+  resolved "https://registry.yarnpkg.com/node/-/node-19.0.1.tgz#2240ba1a411b08b225da7c43a585b60f8621fc70"
+  integrity sha512-cvMKIUNqvaWXxq4Do+7PTSFRDxRfNLqemS1BWpH8NDy2wvJtEEG45nOPU1z4xV+GC6WSgPD7D4+zSo+42DHgUA==
   dependencies:
     node-bin-setup "^1.0.0"
 
