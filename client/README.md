@@ -1,46 +1,104 @@
-# Getting Started with Create React App
+# Festival Player - Client
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+React 18 frontend for Festival Player.
+
+See the [main README](../README.md) for complete setup and development instructions.
+
+## Client Technology Stack
+
+Built with:
+- **React 18.3.1** with createRoot API
+- **Material-UI (MUI) v6** for component library
+- **React Router v6** for client-side routing
+- **Emotion** for CSS-in-JS styling
+- **TypeScript 5.7** with strict mode
+- **React Helmet Async** for document head management
+- **Axios** with caching for API requests
+
+## Development
+
+### Quick Start
+
+From the project root:
+```bash
+./script/start  # Starts both client and server
+```
+
+Or run client only:
+```bash
+cd client
+yarn start      # Client dev server on http://localhost:3000
+```
+
+The client development server includes:
+- Hot module reloading for instant updates
+- Proxying API requests to `http://localhost:5000`
+- Source map support for debugging
+- ESLint integration for code quality
+
+### Build for Production
+
+```bash
+cd client
+yarn build      # Builds to client/build/
+```
+
+The production build:
+- Optimizes and minifies JavaScript bundles
+- Generates static HTML with pre-rendered React
+- Creates source maps for error tracking
+- Outputs to `client/build/` directory
+
+### Testing
+
+```bash
+cd client
+yarn test       # Runs tests in interactive watch mode
+```
+
+## Project Structure
+
+```
+client/
+├── public/           # Static assets (index.html, favicon, etc.)
+├── src/              # React application source
+│   ├── components/   # Reusable React components
+│   ├── pages/        # Page-level components
+│   ├── utils/        # Utility functions and helpers
+│   ├── App.tsx       # Main App component with routing
+│   └── index.tsx     # Application entry point
+├── build/            # Production build output (generated)
+└── package.json      # Client dependencies and scripts
+```
+
+## Environment Variables
+
+The client uses environment variables for configuration. Create a `.env` file in the project root (not in the client directory).
+
+**Note**: Client-side environment variables in Create React App must be prefixed with `REACT_APP_`. However, this application primarily uses server-side configuration, and the client proxies API requests to the backend.
 
 ## Available Scripts
 
-In the project directory, you can run:
+| Script | Description |
+|--------|-------------|
+| `yarn start` | Start development server on port 3000 |
+| `yarn build` | Build optimized production bundle |
+| `yarn test` | Run tests in interactive watch mode |
+| `yarn eject` | Eject from Create React App (⚠️ one-way operation) |
 
-### `yarn start`
+## API Integration
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+The client communicates with the backend server via:
+- **Proxy**: Configured in `package.json` to proxy API requests to `http://localhost:5000`
+- **Axios**: HTTP client with caching adapter for API calls
+- **CORS**: Handled by the backend server
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
-### `yarn test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+All API endpoints are relative paths (e.g., `/api/playlist`) and are automatically proxied to the backend server.
 
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- [Create React App Documentation](https://create-react-app.dev/)
+- [React Documentation](https://react.dev/)
+- [Material-UI (MUI) Documentation](https://mui.com/)
+- [React Router Documentation](https://reactrouter.com/)
+- [Main Project README](../README.md)
