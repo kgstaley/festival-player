@@ -1,0 +1,67 @@
+#!/bin/bash
+# script/remove-coauthored-by: Remove Co-Authored-By lines from commit history
+#
+# WARNING: This rewrites git history. Only run this on branches that haven't
+# been shared or use --force-push carefully.
+
+set -e
+
+cd "$(dirname "$0")/.."
+
+# Colors
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${YELLOW}WARNING: This script will rewrite git history${NC}"
+echo ""
+echo "This will remove all 'Co-Authored-By: Claude...' lines from commit messages."
+echo ""
+echo "Current branch: $(git branch --show-current)"
+echo ""
+
+# Check if we're on a safe branch
+CURRENT_BRANCH=$(git branch --show-current)
+if [ "$CURRENT_BRANCH" = "main" ] || [ "$CURRENT_BRANCH" = "master" ]; then
+    echo -e "${RED}ERROR: This script should not be run on main/master${NC}"
+    echo "Create a new branch first: git checkout -b remove-coauthored-by"
+    exit 1
+fi
+
+echo "This will:"
+echo "1. Rewrite all commits to remove Co-Authored-By lines"
+echo "2. Preserve all other commit message content"
+echo "3. Keep commit authorship and timestamps"
+echo ""
+
+read -p "Continue? (y/N) " -n 1 -r
+echo
+if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+    echo "Aborted"
+    exit 0
+fi
+
+echo ""
+echo "==> Rewriting commit history..."
+echo ""
+
+# Use git filter-branch to rewrite commit messages
+# This removes lines containing "Co-Authored-By: Claude"
+git filter-branch -f --msg-filter '
+    sed "/^Co-Authored-By: Claude.*$/d"
+' -- --all
+
+echo ""
+echo -e "${GREEN}✓ Commit history rewritten${NC}"
+echo ""
+echo "Commits affected:"
+git log --oneline -10
+echo ""
+echo -e "${YELLOW}Next steps:${NC}"
+echo "1. Review the rewritten commits: git log"
+echo "2. Force push to remote: git push --force-with-lease origin $CURRENT_BRANCH"
+echo "3. Update any open PRs from this branch"
+echo ""
+echo -e "${RED}WARNING:${NC} Anyone who has pulled this branch will need to reset their local copy"
+echo ""
