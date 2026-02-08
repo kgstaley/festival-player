@@ -117,6 +117,7 @@ festival-player/
 | `yarn bootstrap` | Run initial project setup (installs all dependencies) |
 | `yarn start:dev` | Start development servers (client + server concurrently) |
 | `yarn start:prod` | Build and start production server |
+| `yarn test:all` | Run all tests (server + client) - uses `script/test` |
 | `yarn build` | Build server TypeScript to `dist/` |
 | `yarn lint` | Lint server TypeScript files |
 | `yarn test` | Run all tests (server and client) |
@@ -178,19 +179,27 @@ All environment variables are configured in `.env` at the project root.
 
 The project includes comprehensive test suites for both server and client code.
 
-**Run all tests:**
+**Run all tests (server + client):**
 ```bash
-yarn test
+./script/test
+# or
+yarn test:all
 ```
 
-**Run tests in watch mode:**
+**Run with options:**
 ```bash
-yarn test:watch
+./script/test --watch      # Watch mode
+./script/test --coverage   # With coverage reports
+./script/test --client     # Client tests only
+./script/test --server     # Server tests only
+./script/test --help       # Show all options
 ```
 
-**Run tests with coverage:**
+**Run server tests only:**
 ```bash
-yarn test:coverage
+yarn test              # Run once
+yarn test:watch        # Watch mode
+yarn test:coverage     # With coverage
 ```
 
 **Run client tests only:**

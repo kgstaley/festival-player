@@ -37,6 +37,7 @@
     "bootstrap": "./script/bootstrap",
     "start:dev": "./script/start",
     "start:prod": "./script/start --production",
+    "test:all": "./script/test",
     "clean": "rimraf dist/*",
     "copy-assets": "ts-node tools/copyAssets",
     "prebuild": "yarn lint",
