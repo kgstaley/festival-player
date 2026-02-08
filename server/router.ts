@@ -129,7 +129,7 @@ router.post(`/spotify/playlist/:playlistId/tracks/new`, (req, res) => {
     const { playlistId } = req.params;
     const { uris } = req.body;
 
-    if (!uris || !!!uris.length) res.sendStatus(400);
+    if (!uris || !uris.length) res.sendStatus(400);
 
     spotifyWebApi
         .addTracksToPlaylist(playlistId, uris)
@@ -225,7 +225,7 @@ router.get('/spotify/me/top/:type', (req: any, res) => {
 
 //#endregion
 
-// //#region songkick api 
+// //#region songkick api
 // router.get("/")
 
 // //#endregion
