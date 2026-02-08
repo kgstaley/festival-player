@@ -11,6 +11,7 @@ This application helps you discover and create playlists based on festival artis
 - **Artist Discovery**: Automatically find tracks from festival artists
 - **Playlist Generation**: Create curated playlists based on festival lineups
 - **Modern Web Stack**: Built with React 18, MUI v6, and TypeScript
+- **Production-Ready**: Graceful shutdown handling for containers, proper port management, and resource cleanup
 
 ## Tech Stack
 
@@ -118,6 +119,9 @@ festival-player/
 | `yarn start:prod` | Build and start production server |
 | `yarn build` | Build server TypeScript to `dist/` |
 | `yarn lint` | Lint server TypeScript files |
+| `yarn test` | Run all tests (server and client) |
+| `yarn test:watch` | Run tests in watch mode |
+| `yarn test:coverage` | Run tests with coverage report |
 | `yarn dev:server` | Start server in watch mode (rebuilds on changes) |
 | `yarn client` | Start client development server only |
 | `yarn server` | Start production server from built files |
@@ -170,6 +174,54 @@ All environment variables are configured in `.env` at the project root.
 4. Add `http://localhost:5000/callback` to Redirect URIs in your Spotify app settings
 5. Add these values to your `.env` file
 
+### Testing
+
+The project includes comprehensive test suites for both server and client code.
+
+**Run all tests:**
+```bash
+yarn test
+```
+
+**Run tests in watch mode:**
+```bash
+yarn test:watch
+```
+
+**Run tests with coverage:**
+```bash
+yarn test:coverage
+```
+
+**Run client tests only:**
+```bash
+cd client && yarn test
+```
+
+**Test Coverage:**
+- **Server tests** (`server.test.ts`): Graceful shutdown, signal handling, port release
+- **Client tests** (`client/src/index.test.tsx`): Cleanup functions, event handlers, HMR
+
+### Graceful Shutdown
+
+The server and client implement graceful shutdown to ensure clean resource cleanup:
+
+**Server:**
+- Responds to `SIGTERM` and `SIGINT` signals (Ctrl+C, Docker/Kubernetes termination)
+- Closes HTTP server and releases port binding cleanly
+- Handles uncaught exceptions and unhandled promise rejections
+- 10-second timeout for forced shutdown if connections hang
+
+**Client:**
+- Cleans up performance entries on page unload (`beforeunload` event)
+- Properly unmounts React app on hot module replacement
+- Reduces resource usage when tab is hidden (`visibilitychange` event)
+
+**Benefits:**
+- No "port already in use" errors on server restart
+- Clean container shutdowns in Docker/Kubernetes
+- Prevents memory leaks in long-running browser sessions
+
 ## Production Deployment
 
 ### Build and Run
@@ -198,11 +250,14 @@ Ensure your production environment has:
 
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
 
-**Latest updates (2026-02-08):**
+**Latest updates:**
+- 🚀 **Graceful shutdown** for server and client with comprehensive tests
 - ✨ Added bootstrap and development scripts for streamlined setup
 - ⬆️ Upgraded to React 18, MUI v6, React Router v6
 - 🔧 TypeScript 5.7 with strict mode enabled
-- 🧪 Updated testing libraries to latest versions
+- 🧪 Jest testing infrastructure with full test coverage
+- 🔒 Production-ready signal handling for containers (Docker/Kubernetes)
+- 🐛 Fixed port conflicts on restart and memory leaks in browser
 
 ## Contributing
 

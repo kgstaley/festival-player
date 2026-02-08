@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- Graceful shutdown handling for Express server (#4)
+  - Signal handlers for SIGTERM, SIGINT for clean container/process shutdown
+  - Proper HTTP server close to release port bindings
+  - Handles uncaught exceptions and unhandled promise rejections
+  - 10-second timeout for forced shutdown if graceful close hangs
+- Client-side cleanup and resource management (#4)
+  - beforeunload event handler for cleanup on page close/refresh
+  - Performance API cleanup to free memory (clearResourceTimings)
+  - Hot module replacement (HMR) disposal in development
+  - Visibility change handler to reduce resource usage when tab hidden
+- Comprehensive test suite for graceful shutdown (#4)
+  - Server tests for signal handling, timeout, and port release
+  - Client tests for cleanup functions and event handlers
+  - Jest testing infrastructure with TypeScript support
+
+### Changed
+- Removed deprecated `suppressImplicitAnyIndexErrors` from client tsconfig.json (#4)
+
+### Fixed
+- Port conflicts on server restart - server now properly releases port binding (#4)
+- Memory leaks from accumulated performance entries in browser (#4)
+
 ## [2026-02-08]
 
 ### Added
