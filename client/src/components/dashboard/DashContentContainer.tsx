@@ -1,5 +1,5 @@
-import { Typography } from '@material-ui/core';
-import { Palette } from '@material-ui/core/styles/createPalette';
+import { Typography } from '@mui/material';
+import { Palette } from '@mui/material/styles';
 import React, { useCallback } from 'react';
 import { SpotifyRes } from '../../type-defs';
 import { FadeIn } from '../common-ui';

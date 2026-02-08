@@ -2,11 +2,12 @@ import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { Transition } from 'react-transition-group';
 
-const transitionStyles = {
+const transitionStyles: Record<string, { opacity: number }> = {
     entering: { opacity: 0.9 },
     entered: { opacity: 1 },
     exiting: { opacity: 0.1 },
     exited: { opacity: 0 },
+    unmounted: { opacity: 0 },
 };
 
 export const FadeIn = ({ in: inProp, children, duration }: { in: boolean; children: any; duration: number }) => {

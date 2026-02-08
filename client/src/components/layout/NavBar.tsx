@@ -1,9 +1,10 @@
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 import { faUserAstronaut } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { AppBar, Button, Slide, Toolbar, useScrollTrigger, useTheme } from '@material-ui/core';
+import { AppBar, Button, Slide, Toolbar, useScrollTrigger, useTheme } from '@mui/material';
 import PropTypes from 'prop-types';
 import React, { useCallback, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { logger } from '../../common-util';
 import { actions, AppCtx } from '../../context';
 import { logout } from '../../services';
@@ -25,7 +26,8 @@ const NavBar = (props: any) => {
     const theme = useTheme();
     const { state, dispatch } = useContext(AppCtx);
     const { palette } = theme;
-    const { children, history } = props;
+    const { children } = props;
+    const navigate = useNavigate();
 
     //#region api calls
     const logOut = useCallback(async () => {
@@ -34,14 +36,14 @@ const NavBar = (props: any) => {
 
             dispatch({ type: actions.LOG_OUT });
 
-            history.replace('/logout');
+            navigate('/logout', { replace: true });
 
             return res;
         } catch (err) {
             logger('error thrown in logOut', err);
             throw err;
         }
-    }, [history, dispatch]);
+    }, [navigate, dispatch]);
     //#endregion
 
     //#region handlers
@@ -53,22 +55,22 @@ const NavBar = (props: any) => {
         (e: any) => {
             e.preventDefault();
             e.stopPropagation();
-            history.push('/home');
+            navigate('/home');
         },
-        [history],
+        [navigate],
     );
 
     const handlePushToDash = useCallback(
         (e: any) => {
             e.preventDefault();
             e.stopPropagation();
-            history.push('/dashboard');
+            navigate('/dashboard');
         },
-        [history],
+        [navigate],
     );
 
     const handleLogout = useCallback(
-        (e) => {
+        (e: React.MouseEvent) => {
             e.preventDefault();
             e.stopPropagation();
             logger('logout pressed');
@@ -175,10 +177,6 @@ const NavBar = (props: any) => {
 
 NavBar.propTypes = {
     children: PropTypes.oneOfType([PropTypes.node, PropTypes.element, PropTypes.func]),
-    history: PropTypes.shape({
-        push: PropTypes.func,
-        replace: PropTypes.func,
-    }).isRequired,
 };
 
 export default NavBar;

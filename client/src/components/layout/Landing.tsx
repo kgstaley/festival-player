@@ -1,4 +1,4 @@
-import { Container, Typography, useTheme } from '@material-ui/core';
+import { Container, Typography, useTheme } from '@mui/material';
 import React, { useContext, useEffect, useMemo } from 'react';
 import { logger } from '../../common-util';
 import { AppCtx } from '../../context';
