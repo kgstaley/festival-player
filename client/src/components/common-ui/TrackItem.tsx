@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@material-ui/core';
+import { Typography, useTheme } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { Track } from '../../type-defs';
 

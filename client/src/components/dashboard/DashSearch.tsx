@@ -1,7 +1,7 @@
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, TextField } from '@material-ui/core';
-import { Palette } from '@material-ui/core/styles/createPalette';
+import { Button, TextField } from '@mui/material';
+import { Palette } from '@mui/material/styles';
 import React from 'react';
 
 const _DashSearch = ({
