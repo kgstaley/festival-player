@@ -1,8 +1,8 @@
 import React, { BaseSyntheticEvent, useCallback, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { TransitionGroup } from 'react-transition-group';
 import { TopArtistsAndTracks } from './index';
-import { Container } from '@material-ui/core';
+import { Container } from '@mui/material';
 
 const Home = (_props: any) => {
     const [topType, setTopType] = useState('artists');

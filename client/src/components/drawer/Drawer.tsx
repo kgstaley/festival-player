@@ -1,6 +1,6 @@
 import { faCompactDisc } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, useTheme } from '@material-ui/core';
+import { Button, useTheme } from '@mui/material';
 import { isEqual } from 'lodash';
 import React, { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { logger } from '../../common-util';

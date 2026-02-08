@@ -1,4 +1,4 @@
-import { Button, Modal, TextField, useTheme } from '@material-ui/core';
+import { Button, Modal, TextField, useTheme } from '@mui/material';
 import React, { useCallback, useContext, useEffect, useMemo } from 'react';
 import { logger } from '../../common-util';
 import { actions, AppCtx } from '../../context';

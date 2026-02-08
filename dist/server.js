@@ -12,14 +12,14 @@ const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const index_1 = require("./server/index");
 dotenv_1.default.config();
-const app = express_1.default();
+const app = (0, express_1.default)();
 const port = process.env.PORT;
 const start = () => {
     try {
-        app.use(cors_1.default());
-        app.use(body_parser_1.json());
-        app.use(body_parser_1.urlencoded({ extended: true }));
-        app.use(cookie_parser_1.default());
+        app.use((0, cors_1.default)());
+        app.use((0, body_parser_1.json)());
+        app.use((0, body_parser_1.urlencoded)({ extended: true }));
+        app.use((0, cookie_parser_1.default)());
         // set api prefix for node endpoints
         app.use('/api', index_1.router);
         // set path for react
@@ -29,13 +29,13 @@ const start = () => {
             res.sendFile(path_1.default.join(__dirname, '..', 'client', 'build', 'index.html'));
         });
         app.listen(port, () => {
-            index_1.logger(`Express up and listening on port ${port}`);
+            (0, index_1.logger)(`Express up and listening on port ${port}`);
         });
     }
     catch (err) {
-        index_1.logger('error thrown in start server', err);
+        (0, index_1.logger)('error thrown in start server', err);
         process.on('uncaughtException', () => app.removeListener(port, () => {
-            index_1.logger('removing port listener and closing express');
+            (0, index_1.logger)('removing port listener and closing express');
         }));
     }
 };

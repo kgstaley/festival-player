@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core';
+import { createTheme } from '@mui/material';
 import Color from 'color';
 import { logger } from '../common-util';
 
@@ -33,7 +33,7 @@ const buildColorObject = (color: string) => {
 
 const buildTheme = () => {
     try {
-        const themeObj = colorArray.reduce((acc, curr) => {
+        const themeObj = colorArray.reduce((acc: any, curr) => {
             const key: any = Object.keys(curr).pop();
             const value: string = Object.values(curr).pop();
             if (!acc[key]) {

@@ -1,7 +1,7 @@
-import { Container, useTheme } from '@material-ui/core';
+import { Container, useTheme } from '@mui/material';
 import { debounce, isEqual } from 'lodash';
 import React, { BaseSyntheticEvent, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { TransitionGroup } from 'react-transition-group';
 import { logger, usePrevious } from '../../common-util';
 import { actions, AppCtx } from '../../context';

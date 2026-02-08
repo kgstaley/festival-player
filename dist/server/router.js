@@ -24,14 +24,14 @@ router.get('/hello', (req, res) => {
 });
 //#region spotify auth
 router.get('/auth', (req, res) => {
-    const state = index_1.generateRandomString(16);
+    const state = (0, index_1.generateRandomString)(16);
     const url = spotifyWebApi.createAuthorizeURL(scope, state);
     res.redirect(url);
 });
 router.get('/auth/callback', (req, res) => {
     const { code } = req.query;
     if (!code) {
-        index_1.logger('no code provided');
+        (0, index_1.logger)('no code provided');
         res.sendStatus(400);
         return;
     }
@@ -43,7 +43,7 @@ router.get('/auth/callback', (req, res) => {
         res.redirect('http://localhost:8080/dashboard');
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -54,7 +54,7 @@ router.get('/auth/me', (req, res) => {
         res.json(data.body);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -69,15 +69,15 @@ router.get(`/spotify/tracks`, (req, res) => {
     if (!req.query)
         res.sendStatus(400);
     const { ids, market } = req.query;
-    index_1.logger('market is (country code)', market);
-    index_1.logger('spotify track ids are ', ids, typeof ids);
+    (0, index_1.logger)('market is (country code)', market);
+    (0, index_1.logger)('spotify track ids are ', ids, typeof ids);
     spotifyWebApi
         .getTracks(ids, market)
         .then((data) => {
         res.json(data.body.tracks);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -94,7 +94,7 @@ router.get(`/spotify/search`, (req, res) => {
         res.json(data.body);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -103,7 +103,7 @@ router.post(`/spotify/playlist/new`, (req, res) => {
     if (!req.query)
         res.sendStatus(400);
     const { name, description } = req.query;
-    index_1.logger('name and description are', { name, description });
+    (0, index_1.logger)('name and description are', { name, description });
     const options = { description, public: false };
     spotifyWebApi
         .createPlaylist(name, options)
@@ -111,7 +111,7 @@ router.post(`/spotify/playlist/new`, (req, res) => {
         res.json(data.body);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -119,16 +119,16 @@ router.post(`/spotify/playlist/new`, (req, res) => {
 router.post(`/spotify/playlist/:playlistId/tracks/new`, (req, res) => {
     const { playlistId } = req.params;
     const { uris } = req.body;
-    if (!uris || !!!uris.length)
+    if (!uris || !uris.length)
         res.sendStatus(400);
     spotifyWebApi
         .addTracksToPlaylist(playlistId, uris)
         .then((data) => {
-        index_1.logger('add tracks to playlist data.body', data.body);
+        (0, index_1.logger)('add tracks to playlist data.body', data.body);
         res.json(data.body);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -143,7 +143,7 @@ router.get(`/spotify/artist/:artistId/tops`, (req, res) => {
         res.json(data.body);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -158,7 +158,7 @@ router.get('/spotify/playlists', (req, res) => {
         res.json(data.body);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -175,7 +175,7 @@ router.get('/spotify/playlist/:playlistId', (req, res) => {
         res.json(data.body);
     })
         .catch((err) => {
-        index_1.logger(err);
+        (0, index_1.logger)(err);
         res.sendStatus(res.statusCode);
     });
 });
@@ -192,7 +192,7 @@ router.get('/spotify/me/top/:type', (req, res) => {
             res.json(data.body);
         })
             .catch((err) => {
-            index_1.logger(err);
+            (0, index_1.logger)(err);
             res.sendStatus(res.statusCode);
         });
     }
@@ -203,11 +203,14 @@ router.get('/spotify/me/top/:type', (req, res) => {
             res.json(data.body);
         })
             .catch((err) => {
-            index_1.logger(err);
+            (0, index_1.logger)(err);
             res.sendStatus(res.statusCode);
         });
     }
 });
 //#endregion
+// //#region songkick api
+// router.get("/")
+// //#endregion
 exports.default = router;
 //# sourceMappingURL=router.js.map

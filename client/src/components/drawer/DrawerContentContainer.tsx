@@ -1,7 +1,7 @@
 import { faPlay, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Drawer, List, ListItem } from '@material-ui/core';
-import { Palette } from '@material-ui/core/styles/createPalette';
+import { Button, Drawer, List, ListItem } from '@mui/material';
+import { Palette } from '@mui/material/styles';
 import React, { useCallback, useContext } from 'react';
 import { AppCtx } from '../../context';
 import { SpotifyRes } from '../../type-defs';
