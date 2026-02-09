@@ -38,14 +38,8 @@ const cleanup = () => {
 window.addEventListener('beforeunload', cleanup);
 
 // Handle hot module replacement in development
-declare const module: NodeModule & {
-    hot?: {
-        dispose: (callback: () => void) => void;
-    };
-};
-
-if (typeof module !== 'undefined' && module.hot) {
-    module.hot.dispose(() => {
+if (import.meta.hot) {
+    import.meta.hot.dispose(() => {
         cleanup();
         // Unmount React app on hot reload
         root.unmount();
