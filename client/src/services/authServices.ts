@@ -1,7 +1,7 @@
 import client from './axiosClient';
 import { logger } from '../common-util';
 
-const rootApi = process.env.REACT_APP_API_PREFIX + '/auth';
+const rootApi = import.meta.env.VITE_API_PREFIX + '/auth';
 
 export const auth = async () => {
     try {

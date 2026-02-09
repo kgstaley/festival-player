@@ -197,6 +197,7 @@ const _Drawer = (_props: any) => {
     }, [
         albumCount,
         artistCount,
+        handleBuildPlaylistItems,
         handleOpenOptionsModal,
         handleConfirmReset,
         handleRemoveSelected,

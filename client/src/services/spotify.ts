@@ -1,7 +1,7 @@
 import { logger } from '../common-util';
 import client from './axiosClient';
 
-const rootApi = `${process.env.REACT_APP_API_PREFIX}/spotify`;
+const rootApi = `${import.meta.env.VITE_API_PREFIX}/spotify`;
 
 export const getTopArtists = async (type: string) => {
     try {
