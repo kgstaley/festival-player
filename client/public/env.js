@@ -1,4 +1,0 @@
-window.env = {
-  "SPOTIFY_ID": "45884547378f4ff7a177d210343b9028",
-  "SPOTIFY_SECRET": "73e512f857fc43aeaf2d65457cabcd26"
-};

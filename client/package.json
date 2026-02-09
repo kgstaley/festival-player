@@ -32,7 +32,6 @@
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "^6.29.0",
-    "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.5",
     "sass": "^1.83.4",
     "sweetalert2": "^11.15.2",
@@ -41,16 +40,21 @@
     "web-vitals": "^4.2.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "start": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:run": "vitest run"
   },
   "eslintConfig": {
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "globals": {
+      "import.meta": "readonly"
+    }
   },
   "browserslist": {
     "production": [
@@ -72,10 +76,14 @@
     "@types/react-router-dom": "^5.3.3",
     "@types/toastr": "^2.1.43",
     "@typescript-eslint/parser": "^8.19.1",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@vitest/ui": "^2.0.0",
     "eslint": "^9.18.0",
-    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-react-hooks": "^5.1.0",
-    "prettier": "^3.4.2"
+    "jsdom": "^24.0.0",
+    "prettier": "^3.4.2",
+    "vite": "^5.4.0",
+    "vitest": "^2.0.0"
   },
   "proxy": "http://localhost:5000"
 }

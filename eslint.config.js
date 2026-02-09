@@ -22,6 +22,10 @@ module.exports = [
         module: 'writable',
         process: 'readonly',
         require: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
       },
     },
     plugins: {
@@ -39,6 +43,9 @@ module.exports = [
       'client/**',
       'tools/**',
       'eslint.config.js',  // Don't lint the config file itself
+      'jest.config.js',  // Jest config uses CommonJS
+      '**/*.test.ts',  // Test files need different config
+      '**/*.spec.ts',
     ],
   },
 ];

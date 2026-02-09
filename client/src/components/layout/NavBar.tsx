@@ -48,7 +48,7 @@ const NavBar = (props: any) => {
 
     //#region handlers
     const handleLoginRedirect = useCallback(() => {
-        window.location.href = `${process.env.REACT_APP_API_PREFIX}/auth`;
+        window.location.href = `${import.meta.env.VITE_API_PREFIX}/auth`;
     }, []);
 
     const handlePushToHome = useCallback(

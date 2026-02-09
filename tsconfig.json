@@ -13,5 +13,5 @@
         },
         "lib": ["es2019"]
     },
-    "include": ["server/**/*", "server.ts"]
+    "include": ["server/**/*", "server.ts", "server.test.ts"]
 }
