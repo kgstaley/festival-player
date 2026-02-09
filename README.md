@@ -24,12 +24,14 @@ This application helps you discover and create playlists based on festival artis
 
 ### Client
 - **React 18.3.1** with modern rendering API
+- **Vite 5.4** for fast development and optimized builds
 - **Material-UI (MUI) v6** for component library
 - **React Router v6** for navigation
 - **Emotion** for CSS-in-JS styling
 - **Axios** for API requests
 - **React Helmet Async** for document head management
 - **TypeScript 5.7** with strict type checking
+- **Vitest 2.0** for unit testing
 
 ## Quick Start
 
