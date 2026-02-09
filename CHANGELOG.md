@@ -24,6 +24,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Jest testing infrastructure with TypeScript support
 
 ### Changed
+- **BREAKING**: Migrated client from Create React App to Vite (#6)
+  - Replaced webpack-based CRA with Vite 5.4 for faster builds and dev server
+  - Updated test framework from Jest to Vitest 2.0 (Jest-compatible API)
+  - Environment variables now use `VITE_*` prefix instead of `REACT_APP_*`
+  - Moved `index.html` to client root directory (Vite convention)
+  - Updated HMR API from webpack's `module.hot` to Vite's `import.meta.hot`
+  - Configured modern SCSS compiler (eliminates Dart Sass deprecation warnings)
+  - Dev server startup time improved from ~30s to <1s
+  - Production build time reduced to ~2.5s
+- Updated `script/test` for Vitest compatibility (#7)
+  - Client tests now use `yarn test:run` instead of `yarn test --watchAll=false`
+  - Watch mode uses `yarn test` (Vitest watch by default)
 - Removed deprecated `suppressImplicitAnyIndexErrors` from client tsconfig.json (#4)
 
 ### Fixed

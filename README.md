@@ -262,11 +262,12 @@ Ensure your production environment has:
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
 
 **Latest updates:**
+- ⚡ **Migrated to Vite** from Create React App - 30x faster dev server, 2.5s builds
+- 🧪 **Vitest testing** with Jest-compatible API and interactive UI
 - 🚀 **Graceful shutdown** for server and client with comprehensive tests
 - ✨ Added bootstrap and development scripts for streamlined setup
 - ⬆️ Upgraded to React 18, MUI v6, React Router v6
 - 🔧 TypeScript 5.7 with strict mode enabled
-- 🧪 Jest testing infrastructure with full test coverage
 - 🔒 Production-ready signal handling for containers (Docker/Kubernetes)
 - 🐛 Fixed port conflicts on restart and memory leaks in browser
 

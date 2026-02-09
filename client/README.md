@@ -8,6 +8,8 @@ See the [main README](../README.md) for complete setup and development instructi
 
 Built with:
 - **React 18.3.1** with createRoot API
+- **Vite 5.4** for lightning-fast development and optimized builds
+- **Vitest 2.0** for unit testing (Jest-compatible API)
 - **Material-UI (MUI) v6** for component library
 - **React Router v6** for client-side routing
 - **Emotion** for CSS-in-JS styling
@@ -31,10 +33,11 @@ yarn start      # Client dev server on http://localhost:3000
 ```
 
 The client development server includes:
-- Hot module reloading for instant updates
+- Hot module replacement (HMR) with Vite for instant updates
 - Proxying API requests to `http://localhost:5000`
 - Source map support for debugging
 - ESLint integration for code quality
+- Near-instant server startup (<1 second)
 
 ### Build for Production
 
@@ -44,23 +47,28 @@ yarn build      # Builds to client/build/
 ```
 
 The production build:
-- Optimizes and minifies JavaScript bundles
-- Generates static HTML with pre-rendered React
+- Optimizes and minifies JavaScript bundles with Rollup
+- Uses modern code splitting for optimal caching
+- Generates vendor chunks (React, MUI) for better performance
 - Creates source maps for error tracking
 - Outputs to `client/build/` directory
+- Typical build time: ~2.5 seconds
 
 ### Testing
 
 ```bash
 cd client
-yarn test       # Runs tests in interactive watch mode
+yarn test          # Runs tests in interactive watch mode (Vitest)
+yarn test:run      # Runs tests once (for CI)
+yarn test:ui       # Opens interactive test UI in browser
 ```
 
 ## Project Structure
 
 ```
 client/
-├── public/           # Static assets (index.html, favicon, etc.)
+├── index.html        # HTML entry point (Vite convention)
+├── public/           # Static assets (favicon, logos, etc.)
 ├── src/              # React application source
 │   ├── components/   # Reusable React components
 │   ├── pages/        # Page-level components
@@ -68,23 +76,31 @@ client/
 │   ├── App.tsx       # Main App component with routing
 │   └── index.tsx     # Application entry point
 ├── build/            # Production build output (generated)
+├── vite.config.ts    # Vite configuration
+├── vitest.config.ts  # Vitest test configuration
 └── package.json      # Client dependencies and scripts
 ```
 
 ## Environment Variables
 
-The client uses environment variables for configuration. Create a `.env` file in the project root (not in the client directory).
+The client uses environment variables for configuration. Create a `.env` file in the `client/` directory.
 
-**Note**: Client-side environment variables in Create React App must be prefixed with `REACT_APP_`. However, this application primarily uses server-side configuration, and the client proxies API requests to the backend.
+**Note**: Client-side environment variables in Vite must be prefixed with `VITE_` to be exposed to the application. For example:
+- `VITE_API_PREFIX` - API endpoint prefix
+- `VITE_SPOTIFY_ID` - Spotify client ID (if needed on client)
+
+Access them in code using `import.meta.env.VITE_*`
 
 ## Available Scripts
 
 | Script | Description |
 |--------|-------------|
-| `yarn start` | Start development server on port 3000 |
-| `yarn build` | Build optimized production bundle |
-| `yarn test` | Run tests in interactive watch mode |
-| `yarn eject` | Eject from Create React App (⚠️ one-way operation) |
+| `yarn start` | Start Vite dev server on port 3000 |
+| `yarn build` | Build optimized production bundle with Vite |
+| `yarn preview` | Preview production build locally |
+| `yarn test` | Run Vitest in interactive watch mode |
+| `yarn test:run` | Run Vitest once (for CI/CD) |
+| `yarn test:ui` | Open interactive Vitest UI in browser |
 
 ## API Integration
 
@@ -97,7 +113,8 @@ All API endpoints are relative paths (e.g., `/api/playlist`) and are automatical
 
 ## Learn More
 
-- [Create React App Documentation](https://create-react-app.dev/)
+- [Vite Documentation](https://vitejs.dev/)
+- [Vitest Documentation](https://vitest.dev/)
 - [React Documentation](https://react.dev/)
 - [Material-UI (MUI) Documentation](https://mui.com/)
 - [React Router Documentation](https://reactrouter.com/)
