@@ -96,11 +96,11 @@ if [ "$SERVER_ONLY" = false ]; then
     cd client
 
     if [ "$WATCH" = true ]; then
-        yarn test --watchAll
+        yarn test
     elif [ "$COVERAGE" = true ]; then
-        yarn test --coverage --watchAll=false
+        yarn test:run --coverage
     else
-        yarn test --watchAll=false
+        yarn test:run
     fi
 
     if [ $? -eq 0 ]; then
