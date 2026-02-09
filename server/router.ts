@@ -1,6 +1,6 @@
 'use-strict';
 import dotenv from 'dotenv';
-import express from 'express';
+import express, { Request } from 'express';
 import SpotifyWebApi from 'spotify-web-api-node';
 import { credentials, generateRandomString, logger } from './index';
 
@@ -67,7 +67,7 @@ router.post('/auth/logout', (req, res) => {
 
 //#region spotify api calls
 // get several tracks based on track spotify id (querystring) with max of 50 at a time
-router.get(`/spotify/tracks`, (req: any, res) => {
+router.get(`/spotify/tracks`, (req: Request<object, object, object, { ids?: string | string[]; market?: string }>, res) => {
     if (!req.query) res.sendStatus(400);
 
     const { ids, market } = req.query;
@@ -86,7 +86,7 @@ router.get(`/spotify/tracks`, (req: any, res) => {
 });
 
 // search
-router.get(`/spotify/search`, (req: any, res) => {
+router.get(`/spotify/search`, (req: Request<object, object, object, { q?: string; types?: string; market?: string; limit?: number; offset?: number }>, res) => {
     if (!req.query) res.sendStatus(400);
     const { q, types, market, limit = 25, offset = 0 } = req.query;
     const options = { market, limit, offset };
@@ -105,10 +105,10 @@ router.get(`/spotify/search`, (req: any, res) => {
 });
 
 // create a private playlist
-router.post(`/spotify/playlist/new`, (req: any, res) => {
+router.post(`/spotify/playlist/new`, (req: Request<object, object, object, { name?: string; description?: string }>, res) => {
     if (!req.query) res.sendStatus(400);
 
-    const { name, description }: { name: string; description: string } = req.query;
+    const { name, description } = req.query;
     logger('name and description are', { name, description });
 
     const options = { description, public: false };
@@ -160,10 +160,8 @@ router.get(`/spotify/artist/:artistId/tops`, (req, res) => {
 });
 
 // get list of current user's playlists
-router.get('/spotify/playlists', (req: any, res) => {
-    // const { offset, limit } = req.query;
-    const offset = req.query.offset;
-    const limit = req.query.limit;
+router.get('/spotify/playlists', (req: Request<object, object, object, { offset?: number; limit?: number }>, res) => {
+    const { offset, limit } = req.query;
 
     spotifyWebApi
         .getUserPlaylists({ offset, limit })
@@ -177,7 +175,7 @@ router.get('/spotify/playlists', (req: any, res) => {
 });
 
 // get a playlist
-router.get('/spotify/playlist/:playlistId', (req: any, res) => {
+router.get('/spotify/playlist/:playlistId', (req: Request<{ playlistId: string }, object, object, { market?: string }>, res) => {
     const { playlistId } = req.params;
     if (!playlistId) res.sendStatus(400);
     const { market } = req.query;
@@ -195,7 +193,7 @@ router.get('/spotify/playlist/:playlistId', (req: any, res) => {
 });
 
 // get users top artists and tracks
-router.get('/spotify/me/top/:type', (req: any, res) => {
+router.get('/spotify/me/top/:type', (req: Request<{ type: string }, object, object, { time_range?: string; offset?: number; limit?: number }>, res) => {
     const { type } = req.params;
     const { time_range = 'medium_term', offset = 0, limit = 10 } = req.query;
     if (!type) res.sendStatus(res.statusCode);
