@@ -16,17 +16,17 @@ const scope = [
 ];
 
 // test ping
-router.get('/hello', (req, res) => {
+router.get('/hello', (_req, res) => {
     res.send('hello world');
 });
 
 // Health check endpoint for Docker
-router.get('/health', (req, res) => {
+router.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
 //#region spotify auth
-router.get('/auth', (req, res) => {
+router.get('/auth', (_req, res) => {
     const state = generateRandomString(16);
     const url = spotifyWebApi.createAuthorizeURL(scope, state);
     res.redirect(url);
@@ -52,7 +52,7 @@ router.get('/auth/callback', (req, res) => {
         });
 });
 
-router.get('/auth/me', (req, res) => {
+router.get('/auth/me', (_req, res) => {
     spotifyWebApi
         .getMe()
         .then((data) => {
@@ -64,70 +64,90 @@ router.get('/auth/me', (req, res) => {
         });
 });
 
-router.post('/auth/logout', (req, res) => {
+router.post('/auth/logout', (_req, res) => {
     spotifyWebApi.resetAccessToken();
     res.sendStatus(res.statusCode);
 });
 //#endregion
 
 //#region spotify api calls
+interface MarketOptions {
+    market?: string;
+}
 // get several tracks based on track spotify id (querystring) with max of 50 at a time
-router.get(`/spotify/tracks`, (req: Request<object, object, object, { ids?: string | string[]; market?: string }>, res) => {
-    if (!req.query) res.sendStatus(400);
+router.get(
+    `/spotify/tracks`,
+    (req: Request<object, object, object, { ids?: readonly string[]; market?: MarketOptions }>, res) => {
+        if (!req.query) res.sendStatus(400);
 
-    const { ids, market } = req.query;
-    logger('market is (country code)', market);
-    logger('spotify track ids are ', ids, typeof ids);
+        const { ids, market } = req.query;
+        logger('market is (country code)', market);
+        logger('spotify track ids are ', ids, typeof ids);
 
-    spotifyWebApi
-        .getTracks(ids, market)
-        .then((data) => {
-            res.json(data.body.tracks);
-        })
-        .catch((err) => {
-            logger(err);
-            res.sendStatus(res.statusCode);
-        });
-});
+        spotifyWebApi
+            .getTracks(ids, market)
+            .then((data) => {
+                res.json(data.body.tracks);
+            })
+            .catch((err) => {
+                logger(err);
+                res.sendStatus(res.statusCode);
+            });
+    },
+);
 
 // search
-router.get(`/spotify/search`, (req: Request<object, object, object, { q?: string; types?: string; market?: string; limit?: number; offset?: number }>, res) => {
-    if (!req.query) res.sendStatus(400);
-    const { q, types, market, limit = 25, offset = 0 } = req.query;
-    const options = { market, limit, offset };
+router.get(
+    `/spotify/search`,
+    (
+        req: Request<
+            object,
+            object,
+            object,
+            { q?: string; types?: string; market?: string; limit?: number; offset?: number }
+        >,
+        res,
+    ) => {
+        if (!req.query) res.sendStatus(400);
+        const { q, types, market, limit = 25, offset = 0 } = req.query;
+        const options = { market, limit, offset };
 
-    const parsedTypes = JSON.parse(types);
+        const parsedTypes = JSON.parse(types);
 
-    spotifyWebApi
-        .search(q, parsedTypes, options)
-        .then((data) => {
-            res.json(data.body);
-        })
-        .catch((err) => {
-            logger(err);
-            res.sendStatus(res.statusCode);
-        });
-});
+        spotifyWebApi
+            .search(q, parsedTypes, options)
+            .then((data) => {
+                res.json(data.body);
+            })
+            .catch((err) => {
+                logger(err);
+                res.sendStatus(res.statusCode);
+            });
+    },
+);
 
 // create a private playlist
-router.post(`/spotify/playlist/new`, (req: Request<object, object, object, { name?: string; description?: string }>, res) => {
-    if (!req.query) res.sendStatus(400);
+router.post(
+    `/spotify/playlist/new`,
+    (req: Request<object, object, object, { name?: string; description?: string }>, res) => {
+        if (!req.query) res.sendStatus(400);
 
-    const { name, description } = req.query;
-    logger('name and description are', { name, description });
+        const { name, description } = req.query;
+        logger('name and description are', { name, description });
 
-    const options = { description, public: false };
+        const options = { description, public: false };
 
-    spotifyWebApi
-        .createPlaylist(name, options)
-        .then((data) => {
-            res.json(data.body);
-        })
-        .catch((err) => {
-            logger(err);
-            res.sendStatus(res.statusCode);
-        });
-});
+        spotifyWebApi
+            .createPlaylist(name, options)
+            .then((data) => {
+                res.json(data.body);
+            })
+            .catch((err) => {
+                logger(err);
+                res.sendStatus(res.statusCode);
+            });
+    },
+);
 
 // add tracks to playlist
 router.post(`/spotify/playlist/:playlistId/tracks/new`, (req, res) => {
@@ -180,51 +200,65 @@ router.get('/spotify/playlists', (req: Request<object, object, object, { offset?
 });
 
 // get a playlist
-router.get('/spotify/playlist/:playlistId', (req: Request<{ playlistId: string }, object, object, { market?: string }>, res) => {
-    const { playlistId } = req.params;
-    if (!playlistId) res.sendStatus(400);
-    const { market } = req.query;
-    const options = { market };
+router.get(
+    '/spotify/playlist/:playlistId',
+    (req: Request<{ playlistId: string }, object, object, { market?: string }>, res) => {
+        const { playlistId } = req.params;
+        if (!playlistId) res.sendStatus(400);
+        const { market } = req.query;
+        const options = { market };
 
-    spotifyWebApi
-        .getPlaylist(playlistId, options)
-        .then((data) => {
-            res.json(data.body);
-        })
-        .catch((err) => {
-            logger(err);
-            res.sendStatus(res.statusCode);
-        });
-});
+        spotifyWebApi
+            .getPlaylist(playlistId, options)
+            .then((data) => {
+                res.json(data.body);
+            })
+            .catch((err) => {
+                logger(err);
+                res.sendStatus(res.statusCode);
+            });
+    },
+);
 
 // get users top artists and tracks
-router.get('/spotify/me/top/:type', (req: Request<{ type: string }, object, object, { time_range?: string; offset?: number; limit?: number }>, res) => {
-    const { type } = req.params;
-    const { time_range = 'medium_term', offset = 0, limit = 10 } = req.query;
-    if (!type) res.sendStatus(res.statusCode);
+router.get(
+    '/spotify/me/top/:type',
+    (
+        req: Request<
+            { type: string },
+            object,
+            object,
+            { time_range?: 'long_term' | 'medium_term' | 'short_term' | undefined; offset?: number; limit?: number }
+        >,
+        res,
+    ) => {
+        const { type } = req.params;
+        const { time_range = 'medium_term', offset = 0, limit = 10 } = req.query;
+        if (!type) res.sendStatus(res.statusCode);
 
-    if (type === 'artists') {
-        spotifyWebApi
-            .getMyTopArtists({ time_range, offset, limit })
-            .then((data) => {
-                res.json(data.body);
-            })
-            .catch((err) => {
-                logger(err);
-                res.sendStatus(res.statusCode);
-            });
-    } else if (type === 'tracks') {
-        spotifyWebApi
-            .getMyTopTracks({ time_range, offset, limit })
-            .then((data) => {
-                res.json(data.body);
-            })
-            .catch((err) => {
-                logger(err);
-                res.sendStatus(res.statusCode);
-            });
-    }
-});
+        if (type === 'artists') {
+            spotifyWebApi
+                .getMyTopArtists({ time_range, offset, limit })
+                .then((data) => {
+                    res.json(data.body);
+                })
+                .catch((err) => {
+                    logger(err);
+                    res.sendStatus(res.statusCode);
+                });
+        } else if (type === 'tracks') {
+            spotifyWebApi
+                .getMyTopTracks({ time_range, offset, limit })
+                .then((data) => {
+                    res.json(data.body);
+                })
+                .catch((err) => {
+                    logger(err);
+                    res.sendStatus(res.statusCode);
+                });
+        }
+    },
+);
 
 //#endregion
 
