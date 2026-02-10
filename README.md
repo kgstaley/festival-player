@@ -257,6 +257,24 @@ Ensure your production environment has:
 - Correct `REDIRECT_URI` matching your production domain
 - Appropriate `PORT` configured if not using default
 
+## Docker Deployment
+
+The application includes Docker support for containerized development and production deployments. All Docker operations use standardized scripts that match the local development workflow.
+
+**Quick Start:**
+```bash
+# Development: Server in Docker, client running locally
+./script/start --docker
+
+# Production: Build Docker image
+./script/build --docker
+
+# Testing: Run tests in container
+./script/test --docker
+```
+
+For comprehensive Docker documentation including multi-stage builds, environment configuration, health checks, and deployment patterns, see [docs/DOCKER.md](docs/DOCKER.md).
+
 ## Recent Changes
 
 See [CHANGELOG.md](CHANGELOG.md) for a detailed history of changes.
