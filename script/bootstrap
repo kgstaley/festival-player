@@ -56,10 +56,36 @@ else
     echo -e "${GREEN}✓${NC} .env file found"
 fi
 
+# Check for Docker (optional)
+echo ""
+echo "==> Checking Docker environment..."
+if command -v docker &> /dev/null; then
+    echo -e "${GREEN}✓${NC} Docker $(docker --version | cut -d' ' -f3 | tr -d ',') found"
+
+    # Check for .env.docker file
+    if [ ! -f .env.docker ]; then
+        if [ -f .env.docker.example ]; then
+            echo -e "${YELLOW}Creating .env.docker from template${NC}"
+            cp .env.docker.example .env.docker
+            echo ""
+            echo "Please configure .env.docker with your environment variables"
+        else
+            echo -e "${YELLOW}Note: .env.docker file not found${NC}"
+            echo "Create .env.docker for Docker deployments"
+        fi
+    else
+        echo -e "${GREEN}✓${NC} .env.docker file found"
+    fi
+else
+    echo -e "${YELLOW}Docker not found (optional)${NC}"
+    echo "Install Docker from https://www.docker.com/get-started for containerized deployments"
+fi
+
 echo ""
 echo -e "${GREEN}Bootstrap complete!${NC}"
 echo ""
 echo "Next steps:"
 echo "  1. Make sure your .env file is configured (see script/.env.example)"
 echo "  2. Run './script/start' to start the development server"
+echo "     Or './script/start --docker' for Docker development"
 echo "     Or run 'yarn start:dev' if you prefer"
