@@ -20,6 +20,11 @@ router.get('/hello', (req, res) => {
     res.send('hello world');
 });
 
+// Health check endpoint for Docker
+router.get('/health', (req, res) => {
+    res.status(200).json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 //#region spotify auth
 router.get('/auth', (req, res) => {
     const state = generateRandomString(16);
