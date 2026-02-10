@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      target: build
+    volumes:
+      # Mount source files for hot reload
+      - ./server.ts:/app/server.ts
+      - ./server:/app/server
+      - ./tsconfig.json:/app/tsconfig.json
+      - ./package.json:/app/package.json
+      # Named volume for node_modules to avoid conflicts
+      - node_modules:/app/node_modules
+    ports:
+      - "5000:5000"
+    env_file:
+      - .env.docker
+    environment:
+      - NODE_ENV=development
+    command: >
+      sh -c "yarn global add nodemon &&
+             nodemon --watch server --watch server.ts --exec 'yarn tsc && node dist/server.js'"
+
+volumes:
+  node_modules:
