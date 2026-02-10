@@ -17,6 +17,7 @@ WATCH=false
 COVERAGE=false
 CLIENT_ONLY=false
 SERVER_ONLY=false
+DOCKER=false
 
 for arg in "$@"; do
     case $arg in
@@ -36,6 +37,10 @@ for arg in "$@"; do
             SERVER_ONLY=true
             shift
             ;;
+        --docker)
+            DOCKER=true
+            shift
+            ;;
         --help)
             echo "Usage: ./script/test [options]"
             echo ""
@@ -44,6 +49,7 @@ for arg in "$@"; do
             echo "  --coverage   Run tests with coverage report"
             echo "  --client     Run only client tests"
             echo "  --server     Run only server tests"
+            echo "  --docker     Run server tests in Docker"
             echo "  --help       Show this help message"
             echo ""
             echo "Examples:"
@@ -51,6 +57,7 @@ for arg in "$@"; do
             echo "  ./script/test --watch      # Run all tests in watch mode"
             echo "  ./script/test --coverage   # Run all tests with coverage"
             echo "  ./script/test --client     # Run only client tests"
+            echo "  ./script/test --docker     # Run server tests in Docker"
             exit 0
             ;;
         *)
@@ -69,21 +76,47 @@ if [ "$CLIENT_ONLY" = false ]; then
     echo -e "${BLUE}==> Running server tests...${NC}"
     echo ""
 
-    if [ "$WATCH" = true ]; then
-        yarn test:watch
-    elif [ "$COVERAGE" = true ]; then
-        yarn test:coverage
-    else
-        yarn test
-    fi
+    if [ "$DOCKER" = true ]; then
+        # Check if Docker is installed
+        if ! command -v docker &> /dev/null; then
+            echo -e "${RED}Error: Docker is not installed${NC}"
+            echo ""
+            echo "Please install Docker to use this mode."
+            echo "Visit: https://docs.docker.com/get-docker/"
+            echo ""
+            exit 1
+        fi
 
-    if [ $? -eq 0 ]; then
+        echo "Running server tests in Docker..."
         echo ""
-        echo -e "${GREEN}✓${NC} Server tests passed"
+
+        docker-compose run --rm server yarn test
+
+        if [ $? -eq 0 ]; then
+            echo ""
+            echo -e "${GREEN}✓${NC} Server tests passed"
+        else
+            echo ""
+            echo -e "${RED}✗${NC} Server tests failed"
+            exit 1
+        fi
     else
-        echo ""
-        echo -e "${RED}✗${NC} Server tests failed"
-        exit 1
+        if [ "$WATCH" = true ]; then
+            yarn test:watch
+        elif [ "$COVERAGE" = true ]; then
+            yarn test:coverage
+        else
+            yarn test
+        fi
+
+        if [ $? -eq 0 ]; then
+            echo ""
+            echo -e "${GREEN}✓${NC} Server tests passed"
+        else
+            echo ""
+            echo -e "${RED}✗${NC} Server tests failed"
+            exit 1
+        fi
     fi
 fi
 
